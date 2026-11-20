@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portide</title>
+<link rel="icon" href="assets/mark.svg">
+<link rel="alternate" hreflang="zh-CN" href="zh/">
+<link rel="alternate" hreflang="en" href="en/">
+<script>
+(function () {
+  var l = null;
+  try { l = localStorage.getItem('portide-lang'); } catch (e) {}
+  if (l !== 'zh' && l !== 'en') {
+    var langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+    l = /^zh/i.test(langs[0] || '') ? 'zh' : 'en';
+  }
+  location.replace(l + '/' + location.hash);
+})();
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=en/"></noscript>

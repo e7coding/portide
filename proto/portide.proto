@@ -1,0 +1,291 @@
+// Portide 协议消息定义（v1）。开源时作为公开协议规范的一部分。
+syntax = "proto3";
+
+package portide.v1;
+
+option go_package = "portide/core/pb";
+
+// ---------- 成员签名链（设计方案 3.2） ----------
+
+// Record 是签名链中的一条记录，也是存储和传输的单位。
+// 签名覆盖 body 的原始字节；任何一方都不重新编码 body，以免序列化差异导致验签失败。
+message Record {
+  bytes body = 1;      // RecordBody 的序列化字节
+  bytes signer = 2;    // 签名设备的 Ed25519 公钥（32 字节）
+  bytes signature = 3; // Ed25519("portide-chain-v1\x00" ‖ body)
+}
+
+message RecordBody {
+  uint64 seq = 1;       // 从 0 开始连续编号
+  bytes prev_hash = 2;  // 上一条 Record 序列化字节的 SHA-256；创世记录为空
+  int64 time_unix = 3;  // 仅供展示，不参与校验
+  oneof op {
+    CreateCircle create = 10;
+    AddDevice add_device = 11;
+    RemoveDevice remove_device = 12;
+    RenameDevice rename_device = 13;
+  }
+}
+
+// CreateCircle 只出现在创世记录中，创建者设备自动成为第一个成员。
+message CreateCircle {
+  bytes device_key = 1;
+  string device_name = 2;
+}
+
+message AddDevice {
+  bytes device_key = 1;
+  string device_name = 2;
+}
+
+// RenameDevice 修改一台成员设备的名字（M3c）：由任意成员签名，可以改自己也可以改别的设备。
+// 旧版本不认识这种记录会拒绝整条链，所以只有所有成员都在 Hello.features 里声明过 "rename" 才允许追加。
+message RenameDevice {
+  bytes device_key = 1;
+  string device_name = 2;
+}
+
+// RemoveDevice 把一台设备移出设备圈（设计方案 3.5），由另一台成员签名，不能移除自己。
+// 移除的同时轮换发现密钥：记录里只有新密钥的校验值，新密钥本身只在成员连接里下发
+// （ChainUpdate.discovery_key），被移除的设备即使拿到这条记录也算不出新密钥。
+message RemoveDevice {
+  bytes device_key = 1;
+  bytes discovery_key_check = 2; // SHA-256("portide-discovery-key-check-v1\x00" ‖ 新发现密钥)，32 字节
+}
+
+// ---------- 成员连接（ALPN portide/2） ----------
+
+// Envelope 是成员连接上握手之后每条新流的第一条消息，按类型分发。
+message Envelope {
+  oneof msg {
+    ChainUpdate chain_update = 1;
+    Offer offer = 2;          // 打开一次传输的控制流
+    FileData file_data = 3;   // 打开一个文件的数据流
+    Candidates candidates = 4; // 经中继的连接上交换的直连候选地址（M2b）
+    LeaveRequest leave_request = 5; // 请求对方把发送方移出设备圈（主动退出）
+    CircleMove circle_move = 6;     // 已迁移到新圈的设备让来源圈里的设备跟过来（合并设备圈设计 8.1）
+    RelaySettings relay_settings = 7; // 设备圈的中继列表（M6a）；只发给声明了 "relays" 的设备
+  }
+}
+
+// LeaveRequest：发送方要离开设备圈（例如改为加入别的设备圈），请求对方把它移出。
+// 只发给在 Hello.features 里声明过 "leave" 的成员；旧版本不认识这种消息，会直接丢弃这条流。
+// 对方用一条普通的 RemoveDevice 记录移除发送方（同时轮换发现密钥，发送方拿不到新密钥），
+// 在同一条流上回复 LeaveReply，然后断开和发送方的连接、把新链推给其他成员。
+message LeaveRequest {}
+
+message LeaveReply {
+  string error = 1; // 非空表示没有移除
+}
+
+// CircleMove：已经迁移到新圈的设备，在"旧圈连接"上让还在来源圈里的设备跟过来（合并设备圈设计 8.1）。
+// 只发给在 Hello.features 里声明过 "merge" 的设备；接收方在同一条流上回复 CircleMoveAck。
+message CircleMove {
+  repeated bytes chain = 1;      // 新圈的完整签名链（发送方此刻最新的）
+  bytes discovery_key = 2;       // 新圈的当前发现密钥
+  string relay_config = 3;       // 发送方当前的中继配置串；可能为空
+  repeated bytes old_chain = 4;  // 发送方保存的来源圈签名链
+  int64 expires_at = 5;          // 等待期的截止时间（Unix 秒），跟过来的设备沿用，不重新计时
+  bytes relay_settings = 6;      // 发送方的 RelaySettings 序列化字节（M6a）；relay_config 同样填列表里的第一个，给旧版本用
+}
+
+// RelaySettings 是设备圈共享的中继列表，由最后修改它的设备签名（M6a）。
+message RelaySettings {
+  bytes body = 1;      // RelaySettingsBody 的序列化字节
+  bytes signer = 2;    // 签名设备的 Ed25519 公钥
+  bytes signature = 3; // Ed25519("portide-relay-settings-v1\x00" ‖ body)
+}
+
+message RelaySettingsBody {
+  uint64 version = 1;          // 0 表示本机升级时由旧配置转来、还没同步过
+  repeated string configs = 2; // 中继配置串（portide-relay://…），最多 4 个，指纹互不相同；空列表表示"不用中继"
+  int64 time_unix = 3;         // 修改时间，只用于显示
+}
+
+message CircleMoveAck { string error = 1; } // 非空表示没有跟过来："moved elsewhere"、"expired"、"invalid …"
+
+// Candidates 只在经中继的成员连接上发送：发送方可以被直接连接的地址（中继看到的公网地址、本机各网卡的局域网地址）。
+// 双方收到后同时向对方的每个地址发起直连（打洞），连上之后改用直连、关掉经中继的那条。
+// 这些地址只给已经通过成员握手的成员，中继和其他持有令牌的设备拿不到。
+message Candidates {
+  repeated string addrs = 1; // IP:端口，最多 8 个
+}
+
+// ChainUpdate 在本机签名链变化后推送给已连接的成员。
+message ChainUpdate {
+  repeated bytes chain = 1; // 发送方完整签名链
+  // 发送方当前的发现密钥：只在链里有移除记录、且这把密钥与最新一条移除记录的校验值一致时携带。
+  // 接收方先合并 chain，再核对校验值，一致才采用。
+  bytes discovery_key = 2;
+}
+
+// Hello 是匿名成员握手（core/memberauth）的第 2 步：携带设备身份证明和完整签名链。
+message Hello {
+  uint32 version = 1;
+  string device_name = 2;
+  repeated bytes chain = 3;  // 发送方完整签名链（每项为一条 Record 的序列化字节）
+  bytes device_key = 4;      // 发送方设备公钥（Ed25519，32 字节）
+  bytes signature = 5;       // Ed25519(设备密钥, "portide-member-identity-v2\x00" ‖ 角色 ‖ "\x00" ‖ TLS 导出值)
+  repeated string features = 6; // 本机支持的可选功能（M3c，例如 "rename"）；旧版本不发也不看
+}
+
+// ---------- 匿名成员握手（设计方案 4.2 已知限制的修复，方案 B） ----------
+// 双方都只出示临时 TLS 证书。握手后：
+//   1. MemberGate：用设备圈密钥证明"我在这个圈子里"，不透露是哪台设备；
+//   2. Hello：通过第 1 步之后才互相出示设备身份；
+//   3. MemberReady：发起方确认保留这条连接（用于去重），接收方收到后才登记。
+
+message MemberGate {
+  bytes mac = 1; // HMAC-SHA256(圈子认证密钥, "portide-member-gate-v2\x00" ‖ 角色 ‖ "\x00" ‖ TLS 导出值)
+}
+
+message MemberReady {}
+
+// ---------- 配对（ALPN portide-pair/2，设计方案 3.3 方式 2） ----------
+// 双方的 TLS 证书都是一次性的。CPace 绑定本条 TLS 连接的导出值，中间人两边的导出值不同，确认必然失败。
+// 设备名和设备身份只在对方证明知道配对码之后才发出。
+
+message PairHello {          // 加入方 → 邀请方
+  bytes cpace_msg_a = 1;
+  reserved 2;                // v1 的 device_name：v2 改在 PairConfirm 中发送
+}
+
+message PairChallenge {      // 邀请方 → 加入方
+  bytes cpace_msg_b = 1;
+  bytes responder_tag = 2;   // 邀请方的确认标签
+  repeated string features = 3; // 邀请方支持的功能（"circle2"）；旧版本不发
+}
+
+message PairConfirm {        // 加入方 → 邀请方（加入方已验证邀请方的确认标签）
+  bytes initiator_tag = 1;   // 加入方的确认标签
+  bytes device_key = 2;      // 加入方设备公钥
+  string device_name = 3;
+  bytes signature = 4;       // Ed25519(设备密钥, "portide-pair-joiner-v2\x00" ‖ TLS 导出值)
+  repeated string features = 5; // 加入方支持的功能（M3c），同 Hello.features；旧版本没有这个字段
+  CircleState circle = 6;    // 加入方当前的设备圈；旧版本不发
+}
+
+message CircleState {
+  uint32 members = 1;        // 当前成员数（含本机）；不在圈里为 0
+  bytes circle_id = 2;       // 圈子 ID（创世记录的 SHA-256）；不在圈里为空
+  bool merge_ok = 3;         // 用户已同意两边都有多台设备时合并（M5b 用）
+}
+
+// PairDecision：邀请方验证 PairConfirm 之后告诉加入方结果。只发给声明了 circle2 的加入方。
+message PairDecision {
+  enum Mode { JOIN = 0; ADOPT = 1; MERGE = 2; }
+  Mode mode = 1;
+  bytes inviter_key = 2;
+  string inviter_name = 3;
+  bytes signature = 4;       // Ed25519(邀请方设备密钥, "portide-pair-inviter-v2\x00" ‖ TLS 导出值)
+  string error = 5;          // 非空表示拒绝："same circle"、"merge not confirmed"、"merge unsupported"（对方的版本不支持合并）
+}
+
+// PairAck：反向加入时邀请方换圈之后的回复。
+message PairAck { string error = 1; }
+
+// PairMerge：MERGE 时加入方在 PairDecision 之后发来源圈的完整签名链。只在配对码证明之后发送，上限 4 MB。
+message PairMerge { repeated bytes chain = 1; }
+
+// 反向加入（ADOPT）时方向相反：加入方把自己的链发给邀请方，inviter_key 填加入方自己的公钥，
+// signature 改用上下文 "portide-pair-adopter-v2\x00"，避免和正向的欢迎消息混用。
+message PairWelcome {        // 邀请方 → 加入方，配对的最终结果
+  string error = 1;          // 非空表示失败
+  repeated bytes chain = 2;  // 已包含"加入 新设备"记录的完整签名链
+  bytes discovery_key = 3;   // 设备圈的发现密钥（设计方案 4.1）
+  bytes inviter_key = 4;     // 邀请方设备公钥
+  bytes signature = 5;       // Ed25519(设备密钥, "portide-pair-inviter-v2\x00" ‖ TLS 导出值)
+  string relay_config = 6;   // 邀请方的中继配置串（M2a）；没有配置中继时为空
+  bytes relay_settings = 7;  // RelaySettings 序列化字节（M6a）；两个方向都用，relay_config 填列表里的第一个
+}
+
+// ---------- 传输（设计方案 5.1、5.2） ----------
+// 控制流：发送方 Envelope{Offer} → 接收方 OfferReply → 各文件的数据流全部确认后，发送方 TransferEnd。
+// 数据流（每个文件一条）：发送方 Envelope{FileData}，随后是从 offset 到文件末尾的原始字节，再一条 FileEnd；
+// 接收方核对哈希、改名为正式文件后回 FileAck。
+
+enum ItemKind {
+  ITEM_KIND_UNSPECIFIED = 0;
+  ITEM_KIND_FILE = 1;
+  ITEM_KIND_DIR = 2;
+  ITEM_KIND_TEXT = 3;
+}
+
+// Item 是报价中的一个条目，在 Offer.items 中的下标就是它的编号。
+message Item {
+  ItemKind kind = 1;
+  string path = 2;      // 相对路径，"/" 分隔（文件和文件夹）；文本条目为空
+  uint64 size = 3;      // 文件字节数；文件夹和文本为 0
+  int64 mtime_ns = 4;   // 修改时间（Unix 纳秒），仅文件
+  string mime = 5;      // 发送方按扩展名猜测，可为空
+  string text = 6;      // 仅文本条目，不超过 64 KiB
+}
+
+message Offer {
+  bytes transfer_id = 1;   // 16 字节 UUID v7；续传时沿用同一个
+  repeated Item items = 2;
+}
+
+message OfferReply {
+  bool accepted = 1;
+  string reason = 2;            // 拒绝原因
+  repeated uint64 offsets = 3;  // 接受时与 items 一一对应：续传偏移；等于 size 表示已收到，跳过
+}
+
+message FileData {
+  bytes transfer_id = 1;
+  uint32 item = 2;     // 条目编号
+  uint64 offset = 3;   // 从这里开始发送；0 表示从头开始（重传时也用 0）
+}
+
+message FileEnd {
+  bytes blake3 = 1;    // 整个文件（从 0 开始）的 BLAKE3-256
+}
+
+message FileAck {
+  bool ok = 1;
+  string error = 2;
+  bool hash_mismatch = 3; // 哈希不一致，接收方已删除临时文件，可以从头重传
+}
+
+message TransferEnd {
+  bool cancelled = 1;
+}
+
+// ---------- 中继（ALPN portide-relay/1，设计方案 4.2、8） ----------
+// 设备用一条单独的 QUIC 连接连中继，按中继指纹校验中继的证书。
+// 控制流（客户端打开的第一条流）：客户端 RelayHello → 中继 RelayWelcome；之后客户端随时可以发 RelaySubscribe，
+// 中继随时可以发 RelayEvent。
+// 会话流：发起方新开一条流发 RelayOpen，中继回 RelayOpenReply；成功时中继在目标设备的连接上新开一条流、
+// 发 RelayIncoming，然后原样转发两条流之间的字节。两端在这对流上跑端到端加密的成员连接（portide/2），
+// 中继只看得到加密后的 QUIC 包。
+
+message RelayHello {
+  bytes token = 1;        // 访问令牌
+  bytes device_key = 2;   // 设备公钥（Ed25519，32 字节）；中继据此算出路由 ID
+  bytes signature = 3;    // Ed25519(设备密钥, "portide-relay-register-v1\x00" ‖ TLS 导出值)
+}
+
+message RelayWelcome {
+  string error = 1;         // 非空表示登记失败
+  string observed_addr = 2; // 中继看到的这台设备的地址（host:port，通常是 NAT 之后的公网地址），用于打洞（M2b）
+}
+
+message RelaySubscribe {
+  repeated bytes routes = 1; // 整体替换要关注的路由 ID（这些设备上线、下线时中继发 RelayEvent）
+}
+
+message RelayEvent {
+  bytes route = 1;
+  bool online = 2;
+}
+
+message RelayOpen {
+  bytes route = 1;        // 要连接的设备的路由 ID
+}
+
+message RelayOpenReply {
+  string error = 1;       // 非空表示没能建立会话（例如对方不在线）
+}
+
+message RelayIncoming {}

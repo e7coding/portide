@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>支持 · Portide</title>
+<meta name="description" content="Portide 使用帮助：常见问题的解决办法、怎么报告问题，以及联系方式。">
+<meta name="theme-color" content="#102A33">
+<link rel="icon" href="../assets/mark.svg">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="alternate" hreflang="zh-CN" href="../zh/support.html">
+<link rel="alternate" hreflang="en" href="../en/support.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&family=Public+Sans:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=5">
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav gutter" id="nav">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../assets/mark.svg" alt=""><span>Portide</span></a>
+    <nav aria-label="网站导航">
+      <a href="./#how">怎么用</a>
+      <a href="./#security">安全</a>
+      <a href="./#faq">常见问题</a>
+      <a href="support.html" aria-current="page">支持</a>
+    </nav>
+    <a class="lang" href="../en/support.html" hreflang="en" lang="en" title="Switch to English" onclick="try{localStorage.setItem('portide-lang','en')}catch(e){}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>EN</span></a>
+    <a class="btn solid" href="download.html">下载</a>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero gutter">
+    <div class="grid" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow">支持</span>
+      <h1>有什么可以<span class="hi">帮你？</span></h1>
+      <p class="lede">大多数问题在下面都有快速解决办法。如果没有，写信给我们，每封邮件我们都会看，并尽快回复。</p>
+      <div class="help-cards">
+        <a class="help-card" href="mailto:e7coding.apple@gmail.com?subject=Portide%20%E6%94%AF%E6%8C%81"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><b>发邮件</b><span>e7coding.apple@gmail.com</span></a>
+        <a class="help-card" data-repo="/issues"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></span><b>报告问题</b><span>在 GitHub 上提交 issue，内容是公开的。</span></a>
+        <a class="help-card" href="#security"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6Z"/></svg></span><b>安全问题</b><span>请私下报告，不要公开发布。</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gutter" id="fixes" style="padding-top:72px">
+    <div class="wrap">
+      <div class="head center">
+        <span class="eyebrow">常见问题</span>
+        <h2 class="h2">快速解决</h2>
+      </div>
+      <div class="faq">
+        <h3>连接</h3>
+        <details open><summary>设备之间找不到对方</summary>
+          <ul>
+            <li>让两台设备连同一个 Wi‑Fi。访客网络和公共热点经常禁止设备互相发现，这种情况下用中继。</li>
+            <li>允许<b>本地网络</b>权限。iPhone 和 iPad：设置 › 隐私与安全性 › 本地网络 › Portide。Mac：系统设置 › 隐私与安全性 › 本地网络。</li>
+            <li>Windows 上，在防火墙里允许 Portide 访问<b>专用网络</b>，并确认当前 Wi‑Fi 被设为专用网络。</li>
+            <li>还是不行？在"添加设备"里点<b>找不到对方？</b>，输入对方的一个地址（在对方的"设置 › 网络与中继 › 本机地址"里）。</li>
+          </ul>
+        </details>
+        <details><summary>配对码不管用</summary>
+          <p>配对码有效期 5 分钟，输错几次就会作废。两台设备都停在"添加设备"界面，重新显示一个配对码再输入。如果设备根本找不到对方，看上一条。</p>
+        </details>
+        <details><summary>在家能用，出门就连不上</summary>
+          <p>离开家里的网络后，设备要通过中继才能互相连上。在"设置 › 网络与中继"里添加一个（会同步到设备圈里的所有设备）。中继可以自己搭在任何一台小型 Linux 服务器上。</p>
+        </details>
+        <details><summary>传得很慢</summary>
+          <p>最快的是同一网络下直连。经过中继时，速度取决于中继服务器的网络。如果中继状态显示<b>已连接（TCP）</b>，说明你的网络封了 UDP，传输会慢一些；UDP 恢复后设备会自动切回去。</p>
+        </details>
+
+        <h3>iPhone 和 iPad</h3>
+        <details><summary>iPhone 在后台收不到</summary>
+          <p>iOS 不允许应用在后台一直保持网络连接。Portide 在前台或刚切到后台时能接收；这期间发来的内容会在发送方排队，下次打开 Portide 时送达。</p>
+        </details>
+        <details><summary>收到的照片没出现在相册里</summary>
+          <p>存进相册需要权限。检查 Portide 里的"设置 › 接收"，以及系统的"设置 › 隐私与安全性 › 照片 › Portide"。其他文件在"文件"应用的"我的 iPhone › Portide"里。</p>
+        </details>
+
+        <h3>电脑</h3>
+        <details><summary>macOS 提示无法验证开发者</summary>
+          <p>Portide 还没经过苹果公证。到"系统设置 › 隐私与安全性"，点<b>仍要打开</b>，只需要做一次。详见<a href="download.html#dl-mac">下载页</a>。</p>
+        </details>
+        <details><summary>Windows 提示"未知发布者"</summary>
+          <p>安装包还没有代码签名。点<b>更多信息 › 仍要运行</b>。</p>
+        </details>
+        <details><summary>收到的文件存在哪里？</summary>
+          <p>存在"设置 › 接收 › 保存位置"指定的文件夹。已有同名文件时，新文件会自动改名，不会覆盖。</p>
+        </details>
+        <details><summary>Linux 上没有托盘图标</summary>
+          <p>原版 GNOME 需要装 AppIndicator 扩展（<code>gnome-shell-extension-appindicator</code>）。没有托盘时，关闭窗口就会退出 Portide，不会在后台悄悄运行。</p>
+        </details>
+        <details><summary>提示端口已被占用</summary>
+          <p>有别的程序占用了端口，常见的是又开了一个 Portide，或者在同一个数据文件夹上运行着 <code>portide daemon</code>。关掉它，或者选<b>换一个端口启动</b>。之后，手动填过这台电脑地址的设备要改成新地址。</p>
+        </details>
+
+        <h3>设备和数据</h3>
+        <details><summary>设备丢了</summary>
+          <p>在任意另一台设备上把它移出设备圈（设备 › 丢失的设备 › 移出设备圈）。设备圈的密钥会随之更换，丢失的设备连不进来，也读不到之后发的任何内容。</p>
+        </details>
+        <details><summary>换新电脑或者重装</summary>
+          <p>卸载不会删除数据文件夹，在同一台电脑上重装后一切都在。换新电脑时，装好 Portide，像配对其他设备一样和你的某台设备配对，再把旧电脑移出设备圈。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gutter" id="report" style="padding-top:24px">
+    <div class="wrap two-col">
+      <div class="panel-soft">
+        <h2>报告问题时</h2>
+        <p class="note" style="color:var(--ink-2);margin-bottom:16px">附上这些信息，能帮我们更快找到原因：</p>
+        <ul class="checklist">
+          <li><span><b>Portide 版本：</b>应用里的"设置 › 关于"，或者 <code>portide version</code>。</span></li>
+          <li><span><b>设备和系统，</b>例如"iPhone 15，iOS 26 和 Windows 11"。</span></li>
+          <li><span><b>连接方式：</b>同一个 Wi‑Fi，还是经过中继。</span></li>
+          <li><span><b>做了什么、预期是什么、</b>实际发生了什么。有报错的话附一张截图。</span></li>
+          <li class="dont"><span><b>不要发送</b>配对码、中继配置串（里面有访问令牌）或个人文件。</span></li>
+        </ul>
+      </div>
+      <div class="panel-soft" id="security">
+        <h2>安全问题</h2>
+        <p class="note" style="color:var(--ink-2)">如果你发现了能读取别人文件、冒充设备，或者让中继知道超出说明范围信息的办法，请私下报告，不要发公开 issue。我们会在 3 个工作日内回复确认。</p>
+        <div class="link-list">
+          <a data-repo="/security/advisories/new">在 GitHub 上私下报告</a>
+          <a href="mailto:e7coding.apple@gmail.com?subject=Portide%20%E5%AE%89%E5%85%A8">发邮件到 e7coding.apple@gmail.com</a>
+          <a data-repo="SECURITY.md">安全策略（英文）</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gutter" style="padding-top:24px">
+    <div class="wrap two-col">
+      <div class="head">
+        <span class="eyebrow">更多</span>
+        <h2 class="h2">使用说明<span class="fade">和政策</span></h2>
+      </div>
+      <div class="link-list" style="margin-top:0">
+        <a href="download.html">下载和安装</a>
+        <a data-repo="docs/桌面端.md">桌面端说明</a>
+        <a data-repo="docs/en/cli.md">命令行说明（英文）</a>
+        <a data-repo="docs/中继部署.md">自己搭中继</a>
+        <a data-repo="docs/en/protocol.md">安全设计（英文）</a>
+        <a href="../en/privacy.html" hreflang="en">隐私政策（英文）</a>
+        <a href="../en/terms.html" hreflang="en">使用条款（英文）</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="wrap">
+    <span>© 2026 Portide</span>
+    <nav aria-label="页脚">
+      <a href="download.html">下载</a>
+      <a href="support.html">支持</a>
+      <a href="../en/privacy.html" hreflang="en">隐私政策（英文）</a>
+      <a href="../en/terms.html" hreflang="en">使用条款（英文）</a>
+      <a data-repo="">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="top-btn" id="top-btn" type="button" aria-label="回到顶部">↑</button>
+<script src="../assets/site.js?v=5"></script>

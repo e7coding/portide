@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Support · Portide</title>
+<meta name="description" content="Get help with Portide: fixes for common problems, how to report a bug, and how to contact us.">
+<meta name="theme-color" content="#102A33">
+<link rel="icon" href="../assets/mark.svg">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="alternate" hreflang="zh-CN" href="../zh/support.html">
+<link rel="alternate" hreflang="en" href="../en/support.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&family=Public+Sans:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=5">
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav gutter" id="nav">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../assets/mark.svg" alt=""><span>Portide</span></a>
+    <nav aria-label="Site">
+      <a href="./#how">How it works</a>
+      <a href="./#security">Security</a>
+      <a href="./#faq">FAQ</a>
+      <a href="support.html" aria-current="page">Support</a>
+    </nav>
+    <a class="lang" href="../zh/support.html" hreflang="zh-CN" lang="zh-CN" title="切换到中文" onclick="try{localStorage.setItem('portide-lang','zh')}catch(e){}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>中文</span></a>
+    <a class="btn solid" href="download.html">Download</a>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero gutter">
+    <div class="grid" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow">Support</span>
+      <h1>How can we <span class="hi">help?</span></h1>
+      <p class="lede">Most problems have a quick fix below. If yours doesn’t, write to us. We read every message and reply as soon as we can.</p>
+      <div class="help-cards">
+        <a class="help-card" href="mailto:e7coding.apple@gmail.com?subject=Portide%20support"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><b>Email us</b><span>e7coding.apple@gmail.com</span></a>
+        <a class="help-card" data-repo="/issues"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></span><b>Report a bug</b><span>Open an issue on GitHub. Issues are public.</span></a>
+        <a class="help-card" href="#security"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6Z"/></svg></span><b>Security issue</b><span>Report it privately. Please don’t post it in public.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gutter" id="fixes" style="padding-top:72px">
+    <div class="wrap">
+      <div class="head center">
+        <span class="eyebrow">Common problems</span>
+        <h2 class="h2">Quick fixes</h2>
+      </div>
+      <div class="faq">
+        <h3>Connecting</h3>
+        <details open><summary>My devices can’t find each other</summary>
+          <ul>
+            <li>Put both devices on the same Wi‑Fi network. Guest networks and public hotspots often stop devices from seeing each other; use a relay there.</li>
+            <li>Allow <b>Local Network</b> access. iPhone and iPad: Settings › Privacy &amp; Security › Local Network › Portide. Mac: System Settings › Privacy &amp; Security › Local Network.</li>
+            <li>On Windows, allow Portide on <b>private networks</b> in Windows Firewall, and make sure your Wi‑Fi is set to a private network.</li>
+            <li>Still nothing? In Add device, choose <b>Can’t find the other device?</b> and enter one of the other device’s addresses, listed under Settings › Network &amp; relays › This device’s addresses.</li>
+          </ul>
+        </details>
+        <details><summary>The pairing code doesn’t work</summary>
+          <p>A code lasts 5 minutes and stops working after a few wrong tries. Show a new code and type it on the other device while both are on the Add device screen. If the devices can’t find each other at all, see the question above.</p>
+        </details>
+        <details><summary>It works at home but not when I’m away</summary>
+          <p>Away from your network, devices need a relay to reach each other. Add one under Settings › Network &amp; relays (it syncs to every device in your circle). You can run your own relay on any small Linux server.</p>
+        </details>
+        <details><summary>Transfers are slow</summary>
+          <p>The fastest path is direct, on the same network. Through a relay, speed depends on the relay’s connection. If the relay status reads <b>Connected (TCP)</b>, your network is blocking UDP and transfers are slower; devices switch back on their own when UDP works again.</p>
+        </details>
+
+        <h3>iPhone and iPad</h3>
+        <details><summary>My iPhone doesn’t receive in the background</summary>
+          <p>iOS doesn’t let apps keep network connections open in the background. Your iPhone receives while Portide is open or just moved to the background. Anything sent meanwhile waits on the other device and arrives the next time you open Portide.</p>
+        </details>
+        <details><summary>Received photos don’t show up in Photos</summary>
+          <p>Saving to Photos needs permission. Check Settings › Receiving in Portide and Settings › Privacy &amp; Security › Photos › Portide on your device. Other files are in the Files app, under On My iPhone › Portide.</p>
+        </details>
+
+        <h3>Desktop</h3>
+        <details><summary>macOS says it can’t verify the developer</summary>
+          <p>Portide isn’t notarized by Apple yet. Go to System Settings › Privacy &amp; Security and click <b>Open Anyway</b>. You only need to do this once. See the <a href="download.html#dl-mac">download page</a> for details.</p>
+        </details>
+        <details><summary>Windows says “unknown publisher”</summary>
+          <p>The installer isn’t code-signed yet. Click <b>More info › Run anyway</b>.</p>
+        </details>
+        <details><summary>Where do received files go?</summary>
+          <p>To the folder under Settings › Receiving › Save to. If a file with the same name is already there, the new one is renamed; nothing is overwritten.</p>
+        </details>
+        <details><summary>There’s no tray icon on Linux</summary>
+          <p>Stock GNOME needs the AppIndicator extension (<code>gnome-shell-extension-appindicator</code>). Without a tray, closing the window quits Portide instead of leaving it running unseen.</p>
+        </details>
+        <details><summary>It says the port is already in use</summary>
+          <p>Another program, often a second copy of Portide or <code>portide daemon</code> on the same data folder, is using the port. Quit it, or choose <b>Start on another port</b>. Devices where you typed this computer’s address by hand then need the new one.</p>
+        </details>
+
+        <h3>Devices and data</h3>
+        <details><summary>I lost a device</summary>
+          <p>Remove it from your circle on any other device (Devices › the lost device › Remove from circle). That replaces the circle’s keys, so the lost device can’t connect or read anything sent afterwards.</p>
+        </details>
+        <details><summary>I’m moving to a new computer or reinstalling</summary>
+          <p>Uninstalling keeps your data folder, so reinstalling on the same computer brings everything back. On a new computer, install Portide and pair it with one of your devices like any other device; then remove the old computer from your circle.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gutter" id="report" style="padding-top:24px">
+    <div class="wrap two-col">
+      <div class="panel-soft">
+        <h2>Reporting a problem</h2>
+        <p class="note" style="color:var(--ink-2);margin-bottom:16px">These help us find it quickly:</p>
+        <ul class="checklist">
+          <li><span><b>Portide version:</b> Settings › About in the apps, or <code>portide version</code>.</span></li>
+          <li><span><b>Devices and systems,</b> for example “iPhone 15, iOS 26 and Windows 11”.</span></li>
+          <li><span><b>How they connect:</b> same Wi‑Fi, or through a relay.</span></li>
+          <li><span><b>What you did, what you expected,</b> and what happened instead. A screenshot of any error helps.</span></li>
+          <li class="dont"><span><b>Never send</b> pairing codes, relay config strings (they contain access tokens) or personal files.</span></li>
+        </ul>
+      </div>
+      <div class="panel-soft" id="security">
+        <h2>Security issues</h2>
+        <p class="note" style="color:var(--ink-2)">If you think you’ve found a way to read someone’s files, impersonate a device or learn more than a relay should, please report it privately instead of in a public issue. We acknowledge reports within 3 working days.</p>
+        <div class="link-list">
+          <a data-repo="/security/advisories/new">Report privately on GitHub</a>
+          <a href="mailto:e7coding.apple@gmail.com?subject=Portide%20security">Email e7coding.apple@gmail.com</a>
+          <a data-repo="SECURITY.md">Security policy</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gutter" style="padding-top:24px">
+    <div class="wrap two-col">
+      <div class="head">
+        <span class="eyebrow">More</span>
+        <h2 class="h2">Guides <span class="fade">and policies</span></h2>
+      </div>
+      <div class="link-list" style="margin-top:0">
+        <a href="download.html">Download and install</a>
+        <a data-repo="docs/en/desktop.md">Desktop guide</a>
+        <a data-repo="docs/en/cli.md">Command line guide</a>
+        <a data-repo="docs/en/relay.md">Running your own relay</a>
+        <a data-repo="docs/en/protocol.md">How the security works</a>
+        <a href="privacy.html">Privacy policy</a>
+        <a href="terms.html">Terms of use</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="wrap">
+    <span>© 2026 Portide</span>
+    <nav aria-label="Footer">
+      <a href="download.html">Download</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a data-repo="">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="top-btn" id="top-btn" type="button" aria-label="Back to top">↑</button>
+<script src="../assets/site.js?v=5"></script>

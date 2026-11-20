@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Download · Portide</title>
+<meta name="description" content="Download Portide for macOS, Windows, Linux and the command line. iPhone and iPad coming to the App Store.">
+<meta name="theme-color" content="#102A33">
+<link rel="icon" href="../assets/mark.svg">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="alternate" hreflang="zh-CN" href="../zh/download.html">
+<link rel="alternate" hreflang="en" href="../en/download.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&family=Public+Sans:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=5">
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav gutter" id="nav">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../assets/mark.svg" alt=""><span>Portide</span></a>
+    <nav aria-label="Site">
+      <a href="./#how">How it works</a>
+      <a href="./#security">Security</a>
+      <a href="./#faq">FAQ</a>
+      <a href="support.html">Support</a>
+    </nav>
+    <a class="lang" href="../zh/download.html" hreflang="zh-CN" lang="zh-CN" title="切换到中文" onclick="try{localStorage.setItem('portide-lang','zh')}catch(e){}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>中文</span></a>
+    <a class="btn solid" href="download.html" aria-current="page">Download</a>
+  </div>
+</header>
+
+<main id="dl" data-soon="Coming soon" data-missing="Not in this release" data-mine="Your device" data-rel-tpl="Version {v} · {d}" data-notes="Release notes">
+  <section class="page-hero gutter">
+    <div class="grid" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow">Download</span>
+      <h1>Get <span class="hi">Portide</span></h1>
+      <p class="lede">Free on Mac, Windows and Linux, with no account and no ads. Install it on each device you want in your circle.</p>
+      <a class="btn lg brand" id="primary" href="#all" data-mac="Download for Mac" data-windows="Download for Windows" data-linux="Download for Linux" data-ios="Coming to the App Store" data-android="Android is on the roadmap" data-other="See all downloads">See all downloads</a>
+      <p class="release-line" id="release-line"><span>Pre-release: desktop builds aren’t signed yet</span></p>
+      <p class="other-os">Need it for another device? <a href="#all">All platforms ↓</a></p>
+    </div>
+  </section>
+
+  <section class="section gutter" id="all" style="padding-top:72px">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">All platforms</span>
+        <h2 class="h2">Pick your devices. <span class="fade">They all work together.</span></h2>
+      </div>
+      <div class="dl-grid">
+        <!-- macOS -->
+        <article class="dl-card" id="dl-mac">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg></span><h2>macOS<small>macOS 11 or later</small></h2></div>
+          <div class="files">
+            <div class="file" data-key="mac-arm64" data-asset="^portide-desktop-.+-macos-arm64\.dmg$"><b>Apple silicon (M1 and later)</b><span class="meta">portide-desktop-&lt;version&gt;-macos-arm64.dmg</span><a class="btn solid">Download</a></div>
+            <div class="file" data-key="mac-amd64" data-asset="^portide-desktop-.+-macos-amd64\.dmg$"><b>Intel</b><span class="meta">portide-desktop-&lt;version&gt;-macos-amd64.dmg</span><a class="btn ghost">Download</a></div>
+          </div>
+          <p class="note">Not sure which Mac you have? Apple menu › About This Mac: “Chip” means Apple silicon, “Processor” means Intel.</p>
+          <details><summary>First launch</summary>
+            <ol>
+              <li>Open the <code>.dmg</code> and drag <b>Portide.app</b> to Applications.</li>
+              <li>Portide isn’t notarized by Apple yet, so macOS says it can’t verify the developer. Go to <b>System Settings › Privacy &amp; Security</b> and click <b>Open Anyway</b>.</li>
+              <li>Allow <b>Local Network</b> (to find your other devices) and <b>Notifications</b> when asked.</li>
+            </ol>
+          </details>
+        </article>
+
+        <!-- Windows -->
+        <article class="dl-card" id="dl-windows">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><h2>Windows<small>Windows 10 and 11, 64-bit</small></h2></div>
+          <div class="files">
+            <div class="file" data-key="win-setup" data-asset="^portide-desktop-.+-windows-amd64-setup\.exe$"><b>Installer</b><span class="meta">portide-desktop-&lt;version&gt;-windows-amd64-setup.exe</span><a class="btn solid">Download</a></div>
+            <div class="file" data-key="win-zip" data-asset="^portide-desktop-.+-windows-amd64\.zip$"><b>Portable zip</b><span class="meta">portide-desktop-&lt;version&gt;-windows-amd64.zip</span><a class="btn ghost">Download</a></div>
+          </div>
+          <p class="note">Needs the Microsoft Edge WebView2 Runtime, which Windows 11 and updated Windows 10 already have.</p>
+          <details><summary>First launch</summary>
+            <ol>
+              <li>The installer isn’t code-signed yet, so SmartScreen says “unknown publisher”: click <b>More info › Run anyway</b>.</li>
+              <li>When Windows Firewall asks, allow Portide on <b>private networks</b>, or your other devices can’t reach this PC.</li>
+              <li>Portable version: unzip it anywhere and run <code>portide-desktop.exe</code>.</li>
+            </ol>
+          </details>
+        </article>
+
+        <!-- Linux -->
+        <article class="dl-card" id="dl-linux">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg></span><h2>Linux<small>x86-64</small></h2></div>
+          <div class="files">
+            <div class="file" data-key="linux-deb" data-asset="^portide-desktop-.+-linux-amd64\.deb$"><b>Ubuntu and Debian (.deb)</b><span class="meta">portide-desktop-&lt;version&gt;-linux-amd64.deb</span><a class="btn solid">Download</a></div>
+            <div class="file" data-key="linux-tgz" data-asset="^portide-desktop-.+-linux-amd64\.tar\.gz$"><b>Other distributions (.tar.gz)</b><span class="meta">portide-desktop-&lt;version&gt;-linux-amd64.tar.gz</span><a class="btn ghost">Download</a></div>
+          </div>
+          <details><summary>Install</summary>
+            <ul>
+              <li>Ubuntu and Debian:</li>
+            </ul>
+            <pre class="codeblock">sudo apt install ./portide-desktop-*-linux-amd64.deb</pre>
+            <ul>
+              <li>Other distributions: unpack the archive and run <code>portide-desktop</code>. Needs GTK 3 and WebKitGTK 4.1 (Fedora: <code>sudo dnf install gtk3 webkit2gtk4.1</code>).</li>
+              <li>The tray works out of the box on KDE and Ubuntu. Stock GNOME needs the AppIndicator extension.</li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- iPhone & iPad -->
+        <article class="dl-card" id="dl-ios">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span><h2>iPhone &amp; iPad<small>iOS and iPadOS 17 or later</small></h2></div>
+          <div class="files">
+            <div class="file"><b>App Store</b><span class="meta">Not available in mainland China</span><a class="btn brand off" aria-disabled="true">Coming soon</a></div>
+          </div>
+          <p class="note">Share from Photos, Files or any app, and save what arrives straight to Photos. iOS lets apps stay connected only while they’re open, so your iPhone receives while Portide is open or just moved to the background; anything sent meanwhile arrives the next time you open it.</p>
+        </article>
+
+        <!-- CLI -->
+        <article class="dl-card" id="dl-cli">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m6 9 3 3-3 3M12 15h6"/></svg></span><h2>Command line<small><code>portide</code>, for servers, NAS and scripts</small></h2></div>
+          <div class="files">
+            <div class="file" data-asset="^portide-[0-9][^/]*-linux-amd64\.tar\.gz$"><b>Linux x86-64</b><span class="meta">portide-&lt;version&gt;-linux-amd64.tar.gz</span><a class="btn ghost">Download</a></div>
+            <div class="file" data-asset="^portide-[0-9][^/]*-linux-arm64\.tar\.gz$"><b>Linux ARM64</b><span class="meta">portide-&lt;version&gt;-linux-arm64.tar.gz</span><a class="btn ghost">Download</a></div>
+            <div class="file" data-asset="^portide-[0-9][^/]*-darwin-arm64\.tar\.gz$"><b>macOS Apple silicon</b><span class="meta">portide-&lt;version&gt;-darwin-arm64.tar.gz</span><a class="btn ghost">Download</a></div>
+            <div class="file" data-asset="^portide-[0-9][^/]*-darwin-amd64\.tar\.gz$"><b>macOS Intel</b><span class="meta">portide-&lt;version&gt;-darwin-amd64.tar.gz</span><a class="btn ghost">Download</a></div>
+            <div class="file" data-asset="^portide-[0-9][^/]*-windows-amd64\.zip$"><b>Windows x86-64</b><span class="meta">portide-&lt;version&gt;-windows-amd64.zip</span><a class="btn ghost">Download</a></div>
+          </div>
+          <details><summary>Get started</summary>
+            <pre class="codeblock">portide init --name "home server"
+portide daemon            # stay online and receive
+portide join 12345678     # enter a code shown on another device</pre>
+          </details>
+        </article>
+
+        <!-- Relay -->
+        <article class="dl-card" id="dl-relay">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span><h2>Relay server<small>Connect your devices across networks</small></h2></div>
+          <div class="files">
+            <div class="file" data-asset="^portide-relay-.+-linux-amd64\.tar\.gz$"><b>Linux x86-64</b><span class="meta">portide-relay-&lt;version&gt;-linux-amd64.tar.gz</span><a class="btn ghost">Download</a></div>
+            <div class="file" data-asset="^portide-relay-.+-linux-arm64\.tar\.gz$"><b>Linux ARM64</b><span class="meta">portide-relay-&lt;version&gt;-linux-arm64.tar.gz</span><a class="btn ghost">Download</a></div>
+            <div class="file" data-needs-repo><b>Docker image</b><span class="meta" data-image>ghcr.io/&lt;owner&gt;/portide-relay:latest</span></div>
+          </div>
+          <p class="note">Only needed when your devices aren’t on the same network. The relay forwards encrypted data and stores nothing. <a data-repo="docs/en/relay.md" style="color:var(--brand)">Relay guide →</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gutter" style="padding-top:24px">
+    <div class="wrap two-col">
+      <div class="head">
+        <span class="eyebrow">After installing</span>
+        <h2 class="h2">Three steps <span class="fade">to your first file</span></h2>
+      </div>
+      <ol class="steps-list">
+        <li><span><b>Name the device.</b> Click Get started and give it a name your other devices will see.</span></li>
+        <li><span><b>Pair a second device.</b> Open Add device on both: Show code on one, Enter code on the other, and type the 8 digits.</span></li>
+        <li><span><b>Send.</b> Open that device’s conversation and drop in files, photos or text. Pair more devices the same way.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section gutter" id="verify" style="padding-top:24px">
+    <div class="wrap two-col">
+      <div class="panel-soft">
+        <h2>Verify your download</h2>
+        <p class="note" style="color:var(--ink-2)">Every release lists a SHA-256 checksum for each file in <code>SHA256SUMS.txt</code>. Download it next to your file, then check:</p>
+        <pre class="codeblock"># Linux: checks every file you downloaded
+sha256sum -c --ignore-missing SHA256SUMS.txt
+
+# macOS: compare with the file's line in SHA256SUMS.txt
+shasum -a 256 portide-desktop-*.dmg
+
+# Windows (PowerShell): the same, in capitals
+Get-FileHash .\portide-desktop-*-setup.exe</pre>
+        <div class="link-list"><a data-sums data-needs-repo href="#verify">SHA256SUMS.txt</a></div>
+      </div>
+      <div class="panel-soft">
+        <h2>Updating and removing</h2>
+        <ul class="checklist">
+          <li><span><b>Updates:</b> the desktop app checks GitHub once a day and shows a dot on Settings when a new version is out. Install it over the old one; your devices, history and settings stay.</span></li>
+          <li><span><b>Turn off update checks</b> in Settings › About, or set <code>PORTIDE_NO_UPDATE_CHECK=1</code> for the command line.</span></li>
+          <li><span><b>Uninstalling</b> keeps your data folder, so reinstalling brings everything back. Delete it to remove everything: <code>~/Library/Application Support/portide</code>, <code>%APPDATA%\portide</code> or <code>~/.config/portide</code>.</span></li>
+        </ul>
+        <div class="link-list">
+          <a data-repo="/releases">All releases and release notes</a>
+          <a href="support.html">Trouble installing? Get help</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="wrap">
+    <span>© 2026 Portide</span>
+    <nav aria-label="Footer">
+      <a href="download.html">Download</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a data-repo="">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="top-btn" id="top-btn" type="button" aria-label="Back to top">↑</button>
+<script src="../assets/site.js?v=5"></script>
+<script src="../assets/download.js?v=5"></script>

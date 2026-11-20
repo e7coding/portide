@@ -1,0 +1,71 @@
+# 私有 GitLab 上的 CI：Go 测试、桌面端界面测试、Linux 和 Windows 打包。
+# 需要一个 Docker 执行器的 Runner。iOS 和 macOS 要 Mac Runner，这里不做（GitHub 上的 ci.yml、release.yml 有）。
+stages: [test, package]
+
+variables:
+  GO_VERSION: "1.26.0"
+  PNPM_VERSION: "12.6.0"
+  GOPATH: $CI_PROJECT_DIR/.go
+  GOFLAGS: -modcacherw
+
+.go-cache: &go-cache
+  key: go-$CI_COMMIT_REF_SLUG
+  paths: [.go/pkg/mod]
+
+.gtk: &gtk
+  - apt-get update -qq && apt-get install -y -qq libgtk-3-dev libwebkit2gtk-4.1-dev >/dev/null
+
+go:
+  stage: test
+  image: golang:${GO_VERSION}-bookworm
+  cache: *go-cache
+  script:
+    - *gtk
+    - unformatted="$(gofmt -l $(git ls-files '*.go'))"
+    - if [ -n "$unformatted" ]; then echo "需要 gofmt 的文件："; echo "$unformatted"; exit 1; fi
+    - go vet ./... && go test ./...
+    - (cd mobile && go vet ./... && go test ./...)
+    # 界面构建产物是 go:embed 进桌面端的，测试前先放一个占位页面。
+    - mkdir -p desktop/frontend/dist && [ -f desktop/frontend/dist/index.html ] || echo '<!doctype html>' > desktop/frontend/dist/index.html
+    - (cd desktop && go vet -tags gtk3 . && go test -tags gtk3 .)
+    - GOOS=windows go vet ./cmd/...
+    - (cd desktop && GOOS=windows go vet .)
+
+frontend:
+  stage: test
+  image: node:22-bookworm
+  cache:
+    key: pnpm-$CI_COMMIT_REF_SLUG
+    paths: [.pnpm-store]
+  script:
+    - npm install -g pnpm@$PNPM_VERSION
+    - cd desktop/frontend
+    - pnpm config set store-dir "$CI_PROJECT_DIR/.pnpm-store"
+    - pnpm install --frozen-lockfile
+    - pnpm test
+    - pnpm build
+
+package:
+  stage: package
+  image: node:22-bookworm
+  cache: *go-cache
+  variables:
+    GIT_DEPTH: 0 # 构建号是 git 提交数
+  script:
+    - *gtk
+    - apt-get install -y -qq nsis >/dev/null
+    - curl -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" | tar -C /usr/local -xz
+    - export PATH="/usr/local/go/bin:$PATH"
+    - npm install -g pnpm@$PNPM_VERSION
+    - bash scripts/build-desktop.sh all
+    - bash scripts/package.sh
+    - deb="$(ls dist/portide-desktop-*-linux-amd64.deb)"
+    - dpkg-deb --info "$deb"
+    - dpkg-deb --contents "$deb" | grep -E 'opt/portide/(portide-desktop|README.md)$'
+  artifacts:
+    expire_in: 7 days
+    paths:
+      - dist/*.deb
+      - dist/*.tar.gz
+      - dist/*.zip
+      - dist/*-setup.exe

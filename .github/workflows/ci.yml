@@ -1,0 +1,118 @@
+# 每次推送和合并请求：Go 测试（三个模块）、桌面端界面测试、Linux 和 Windows 打包。
+# 打包只验证能打出来（产物保留 7 天）；正式发布见 release.yml。
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PNPM_VERSION: 12.6.0
+  NODE_VERSION: 22
+
+jobs:
+  go:
+    name: Go tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: |
+            go.sum
+            desktop/go.sum
+            mobile/go.sum
+      # 桌面端模块用 cgo 编 GTK3 + WebKitGTK（Linux 上的 Go 构建都要加 -tags gtk3）。
+      - name: Install GTK and WebKitGTK
+        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev
+      - name: gofmt
+        run: |
+          unformatted="$(gofmt -l $(git ls-files '*.go'))"
+          if [ -n "$unformatted" ]; then echo "需要 gofmt 的文件："; echo "$unformatted"; exit 1; fi
+      - name: Core (vet, test)
+        run: go vet ./... && go test ./...
+      - name: Mobile module
+        working-directory: mobile
+        run: go vet ./... && go test ./...
+      # 界面构建产物是 go:embed 进桌面端的，测试前先放一个占位页面。
+      - name: Desktop module
+        working-directory: desktop
+        run: |
+          mkdir -p frontend/dist && [ -f frontend/dist/index.html ] || echo '<!doctype html>' > frontend/dist/index.html
+          go vet -tags gtk3 . && go test -tags gtk3 .
+      - name: Windows build check
+        run: |
+          GOOS=windows go vet ./cmd/...
+          (cd desktop && GOOS=windows go vet .)
+
+  frontend:
+    name: Desktop UI tests
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: desktop/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: desktop/frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build
+
+  package:
+    name: Linux and Windows packages
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 构建号是 git 提交数
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: |
+            go.sum
+            desktop/go.sum
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: desktop/frontend/pnpm-lock.yaml
+      - name: Install packaging tools
+        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev nsis
+      - name: Desktop packages (deb, tar.gz, Windows installer and zip)
+        run: bash scripts/build-desktop.sh all
+      - name: Command line and relay packages
+        run: bash scripts/package.sh
+      - name: Check the deb
+        run: |
+          deb="$(ls dist/portide-desktop-*-linux-amd64.deb)"
+          dpkg-deb --info "$deb"
+          dpkg-deb --contents "$deb" | grep -E 'opt/portide/(portide-desktop|README.md)$'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: |
+            dist/*.deb
+            dist/*.tar.gz
+            dist/*.zip
+            dist/*-setup.exe
+          retention-days: 7

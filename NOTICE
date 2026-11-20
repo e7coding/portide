@@ -1,0 +1,12 @@
+Portide
+Copyright 2026 e7coding <e7coding@gmail.com>
+
+Except as noted below, this project is licensed under the Apache License,
+Version 2.0 (see LICENSE).
+
+The relay server (core/relayserver, cmd/portide-relay and deploy/relay) is
+licensed under the GNU Affero General Public License, Version 3 (see the
+LICENSE file in each of those directories).
+
+"Portide" and the Portide logo are not licensed under either license; see
+section 6 of the Apache License, Version 2.0.

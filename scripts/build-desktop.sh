@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+# 构建桌面端 portide-desktop 并打包到 dist/（M3b 设计 4）：
+#   bash scripts/build-desktop.sh [linux|windows|all|mac]
+# 版本号取自 core/version/VERSION（见 scripts/version.sh）。
+# Linux（x86-64）：.deb 和 tar.gz，需要 libgtk-3-dev、libwebkit2gtk-4.1-dev、dpkg-deb。
+# Windows（x86-64）：交叉编译（不需要 cgo），NSIS 安装程序和免安装 zip，需要 makensis。
+# macOS：只能在 Mac 上打（Wails 在 macOS 上需要 cgo），生成 Portide.app 和 .dmg（未签名，见 docs/桌面端.md）。
+# 都需要 Go 和 pnpm。
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source scripts/version.sh
+targets="${1:-all}"
+# Linux 包的维护者（Debian 要求"名字 <邮箱>"）。正式发布前设成真实的联系邮箱。
+maintainer="${PORTIDE_MAINTAINER:-Portide <portide@localhost>}"
+
+(cd desktop/frontend && pnpm install --frozen-lockfile && pnpm build)
+
+build_linux() {
+  local name="portide-desktop-$version-linux-amd64"
+  local out="dist/$name"
+  rm -rf "$out" "$out.tar.gz" "dist/$name.deb"
+  mkdir -p "$out"
+  # Wails v3 beta 在 Linux 上默认用 GTK4，Portide 用 GTK3 + WebKitGTK 4.1。
+  (cd desktop && CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -tags gtk3 -trimpath -ldflags "$ldflags" -o "../$out/portide-desktop" .)
+  cp docs/桌面端.md "$out/" && cp docs/en/desktop.md "$out/README.md"
+  tar -C dist -czf "$out.tar.gz" "$name"
+
+  # .deb：程序在 /opt/portide，启动器和各尺寸图标放到系统目录。Debian 用 ~ 表示预发布（0.6.0~beta.1 排在 0.6.0 前面）。
+  local deb="dist/deb-$name"
+  local tilde="~" debver
+  debver="${version/-/$tilde}"
+  rm -rf "$deb"
+  install -Dm755 "$out/portide-desktop" "$deb/opt/portide/portide-desktop"
+  install -Dm644 docs/桌面端.md "$deb/opt/portide/桌面端.md"
+  install -Dm644 docs/en/desktop.md "$deb/opt/portide/README.md"
+  install -Dm644 desktop/build/linux/portide.desktop "$deb/usr/share/applications/portide.desktop"
+  for size in 16 32 48 64 128 256 512; do
+    install -Dm644 "desktop/build/icons/$size.png" "$deb/usr/share/icons/hicolor/${size}x${size}/apps/portide.png"
+  done
+  install -d -m755 "$deb/usr/bin" "$deb/DEBIAN"
+  ln -s /opt/portide/portide-desktop "$deb/usr/bin/portide-desktop"
+  cat > "$deb/DEBIAN/control" <<CONTROL
+Package: portide-desktop
+Version: $debver
+Architecture: amd64
+Maintainer: $maintainer
+Depends: libgtk-3-0t64 | libgtk-3-0, libwebkit2gtk-4.1-0
+Section: net
+Priority: optional
+Description: Send files and text between your own devices
+ Portide sends files and text between your own computers and phones,
+ end to end encrypted. Devices on the same network connect directly;
+ across networks they go through a relay you run yourself.
+CONTROL
+  dpkg-deb --root-owner-group --build "$deb" "dist/$name.deb"
+  rm -rf "$deb"
+  echo "built $out.tar.gz dist/$name.deb"
+}
+
+build_windows() {
+  local name="portide-desktop-$version-windows-amd64"
+  local out="dist/$name"
+  rm -rf "$out" "dist/$name.zip" "dist/$name-setup.exe"
+  mkdir -p "$out"
+  # 图标、版本信息和清单编进 exe（.syso 只在构建时存在）。不用 local：EXIT 陷阱在函数
+  # 因 set -e 提前退出时也要能看到这两个变量，才能在构建失败时也清理掉。
+  syso="desktop/portide_windows_amd64.syso"
+  info="$(mktemp)"
+  trap 'rm -f "$syso" "$info"' EXIT
+  cat > "$info" <<INFO
+{"fixed": {"file_version": "$version_num.0", "product_version": "$version_num.0"},
+ "info": {"0409": {"ProductName": "Portide", "ProductVersion": "$version", "FileVersion": "$version", "FileDescription": "Portide", "LegalCopyright": "", "CompanyName": "", "Comments": "Send files and text between your own devices"}}}
+INFO
+  (cd desktop && go run -tags gtk3 github.com/wailsapp/wails/v3/cmd/wails3 generate syso -arch amd64 \
+    -icon build/windows/icon.ico -manifest build/windows/portide-desktop.exe.manifest -info "$info" -out portide_windows_amd64.syso)
+  (cd desktop && CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -trimpath -ldflags "$ldflags -H windowsgui" -o "../$out/portide-desktop.exe" .)
+  cp docs/桌面端.md "$out/" && cp docs/en/desktop.md "$out/README.md"
+  (cd dist && python3 -m zipfile -c "$name.zip" "$name")
+  # makensis 在非 UTF-8 的 locale（例如 C）下读不了含中文的脚本，报 "Bad text encoding"：找一个 UTF-8 locale 给它。
+  local utf8
+  utf8="$(locale -a 2>/dev/null | grep -i -E '^(C|en_US)\.utf-?8$' | head -n1 || true)"
+  [ -n "$utf8" ] || utf8=C.UTF-8
+  (cd desktop/build/windows && LC_ALL="$utf8" makensis -V2 -INPUTCHARSET UTF8 -DVERSION="$version" -DVERSION_NUM="$version_num" -DSRC="$(cd ../../.. && pwd)/$out" \
+    -DOUT="$(cd ../../.. && pwd)/dist/$name-setup.exe" installer.nsi)
+  echo "built dist/$name.zip dist/$name-setup.exe"
+}
+
+build_mac() {
+  [ "$(uname)" = Darwin ] || { echo "macOS 包只能在 Mac 上打" >&2; exit 2; }
+  local arch name out app iconset
+  arch="$(go env GOARCH)"
+  name="portide-desktop-$version-macos-$arch"
+  out="dist/$name"
+  app="$out/Portide.app"
+  rm -rf "$out" "dist/$name.dmg"
+  mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
+  # cgo 的 C/Objective-C 代码默认按本机系统版本编译，旧 macOS 上会打不开：固定成和 LSMinimumSystemVersion 一样的 11.0。
+  # 用 CGO_CFLAGS / CGO_LDFLAGS 而不只是 MACOSX_DEPLOYMENT_TARGET：Go 的构建缓存只认前者，否则会复用按新系统编译的缓存。
+  local minos="-mmacosx-version-min=11.0"
+  (cd desktop && MACOSX_DEPLOYMENT_TARGET=11.0 CGO_CFLAGS="${CGO_CFLAGS:--O2 -g} $minos" CGO_LDFLAGS="${CGO_LDFLAGS:--O2 -g} $minos" \
+    CGO_ENABLED=1 go build -trimpath -ldflags "$ldflags" -o "../$app/Contents/MacOS/portide-desktop" .)
+
+  # 图标：由 desktop/build/icons 的 PNG 组成 .icns。
+  iconset="$(mktemp -d)/portide.iconset"
+  mkdir -p "$iconset"
+  for s in 16 32 128 256 512; do
+    cp "desktop/build/icons/$s.png" "$iconset/icon_${s}x${s}.png"
+    cp "desktop/build/icons/$((s * 2)).png" "$iconset/icon_${s}x${s}@2x.png"
+  done
+  iconutil -c icns "$iconset" -o "$app/Contents/Resources/portide.icns"
+
+  # 通知要求程序在带包标识的 .app 里运行（Wails 的通知服务会检查）。
+  cat > "$app/Contents/Info.plist" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleName</key><string>Portide</string>
+  <key>CFBundleDisplayName</key><string>Portide</string>
+  <key>CFBundleIdentifier</key><string>org.portide.desktop</string>
+  <key>CFBundleExecutable</key><string>portide-desktop</string>
+  <key>CFBundleIconFile</key><string>portide</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleShortVersionString</key><string>$version_num</string>
+  <key>CFBundleVersion</key><string>$build</string>
+  <key>LSMinimumSystemVersion</key><string>11.0</string>
+  <key>NSHighResolutionCapable</key><true/>
+  <key>CFBundleDevelopmentRegion</key><string>en</string>
+  <key>CFBundleLocalizations</key><array><string>en</string><string>zh-Hans</string></array>
+  <key>NSLocalNetworkUsageDescription</key><string>Portide finds and connects directly to your other devices on the local network.</string>
+  <key>NSBonjourServices</key><array><string>_portide._udp</string><string>_portide-pair._udp</string></array>
+</dict>
+</plist>
+PLIST
+  # 系统权限提示按系统语言显示：英文是 Info.plist 里的原文，中文在 zh-Hans.lproj。
+  mkdir -p "$app/Contents/Resources/en.lproj" "$app/Contents/Resources/zh-Hans.lproj"
+  printf '"NSLocalNetworkUsageDescription" = "%s";\n' "Portide finds and connects directly to your other devices on the local network." \
+    > "$app/Contents/Resources/en.lproj/InfoPlist.strings"
+  printf '"NSLocalNetworkUsageDescription" = "%s";\n' "Portide 在局域网里寻找并直接连接你自己的其他设备。" \
+    > "$app/Contents/Resources/zh-Hans.lproj/InfoPlist.strings"
+  cp docs/桌面端.md "$out/" && cp docs/en/desktop.md "$out/README.md"
+  # 没有开发者证书：用本机临时签名（ad-hoc），首次打开要在"系统设置 › 隐私与安全性"里允许。
+  codesign --force --deep --sign - "$app"
+  hdiutil create -volname Portide -srcfolder "$out" -ov -format UDZO "dist/$name.dmg" >/dev/null
+  echo "built dist/$name.dmg"
+}
+
+case "$targets" in
+  linux) build_linux ;;
+  windows) build_windows ;;
+  all) build_linux; build_windows ;;
+  mac) build_mac ;;
+  *) echo "用法：bash scripts/build-desktop.sh [linux|windows|all|mac]" >&2; exit 2 ;;
+esac

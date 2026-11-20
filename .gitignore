@@ -1,0 +1,26 @@
+# Go
+/spikes/bin/
+*.test
+*.out
+
+# iOS
+/ios-spike/build/
+/ios-spike/*.xcodeproj/
+xcuserdata/
+DerivedData/
+
+# OS
+.DS_Store
+
+# Build output
+/dist/
+
+# portide 命令行构建产物
+/bin/
+
+# 桌面端 Windows 构建时临时生成的资源文件
+/desktop/*.syso
+
+# 本地部署配置和公开副本的替换规则，含内部地址，不进仓库
+site/deploy.env
+scripts/public-copy.rules

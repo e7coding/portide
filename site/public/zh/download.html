@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>下载 · Portide</title>
+<meta name="description" content="下载 macOS、Windows、Linux 版 Portide 和命令行工具。iPhone 和 iPad 版即将登陆 App Store。">
+<meta name="theme-color" content="#102A33">
+<link rel="icon" href="../assets/mark.svg">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="alternate" hreflang="zh-CN" href="../zh/download.html">
+<link rel="alternate" hreflang="en" href="../en/download.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&family=Public+Sans:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=5">
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav gutter" id="nav">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../assets/mark.svg" alt=""><span>Portide</span></a>
+    <nav aria-label="网站导航">
+      <a href="./#how">怎么用</a>
+      <a href="./#security">安全</a>
+      <a href="./#faq">常见问题</a>
+      <a href="support.html">支持</a>
+    </nav>
+    <a class="lang" href="../en/download.html" hreflang="en" lang="en" title="Switch to English" onclick="try{localStorage.setItem('portide-lang','en')}catch(e){}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>EN</span></a>
+    <a class="btn solid" href="download.html" aria-current="page">下载</a>
+  </div>
+</header>
+
+<main id="dl" data-soon="即将提供" data-missing="这个版本没有" data-mine="你的设备" data-rel-tpl="版本 {v} · {d}" data-notes="更新说明">
+  <section class="page-hero gutter">
+    <div class="grid" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow">下载</span>
+      <h1>下载 <span class="hi">Portide</span></h1>
+      <p class="lede">Mac、Windows、Linux 版免费，不用账号，没有广告。想放进设备圈的每台设备都装一个。</p>
+      <a class="btn lg brand" id="primary" href="#all" data-mac="下载 Mac 版" data-windows="下载 Windows 版" data-linux="下载 Linux 版" data-ios="即将登陆 App Store" data-android="Android 版在计划中" data-other="查看全部下载">查看全部下载</a>
+      <p class="release-line" id="release-line"><span>预发布阶段：桌面版暂未签名</span></p>
+      <p class="other-os">要装到别的设备上？<a href="#all">全部平台 ↓</a></p>
+    </div>
+  </section>
+
+  <section class="section gutter" id="all" style="padding-top:72px">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">全部平台</span>
+        <h2 class="h2">挑你的设备，<span class="fade">它们都能互通</span></h2>
+      </div>
+      <div class="dl-grid">
+        <!-- macOS -->
+        <article class="dl-card" id="dl-mac">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg></span><h2>macOS<small>macOS 11 或更高</small></h2></div>
+          <div class="files">
+            <div class="file" data-key="mac-arm64" data-asset="^portide-desktop-.+-macos-arm64\.dmg$"><b>Apple 芯片（M1 及以后）</b><span class="meta">portide-desktop-&lt;版本&gt;-macos-arm64.dmg</span><a class="btn solid">下载</a></div>
+            <div class="file" data-key="mac-amd64" data-asset="^portide-desktop-.+-macos-amd64\.dmg$"><b>Intel</b><span class="meta">portide-desktop-&lt;版本&gt;-macos-amd64.dmg</span><a class="btn ghost">下载</a></div>
+          </div>
+          <p class="note">不确定是哪种 Mac？苹果菜单 › 关于本机：写着"芯片"的是 Apple 芯片，写着"处理器"的是 Intel。</p>
+          <details><summary>首次打开</summary>
+            <ol>
+              <li>打开 <code>.dmg</code>，把 <b>Portide.app</b> 拖到"应用程序"。</li>
+              <li>Portide 还没经过苹果公证，macOS 会提示无法验证开发者。到<b>系统设置 › 隐私与安全性</b>，点<b>仍要打开</b>。</li>
+              <li>询问时允许<b>本地网络</b>（用来找到你的其他设备）和<b>通知</b>。</li>
+            </ol>
+          </details>
+        </article>
+
+        <!-- Windows -->
+        <article class="dl-card" id="dl-windows">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><h2>Windows<small>Windows 10 和 11，64 位</small></h2></div>
+          <div class="files">
+            <div class="file" data-key="win-setup" data-asset="^portide-desktop-.+-windows-amd64-setup\.exe$"><b>安装包</b><span class="meta">portide-desktop-&lt;版本&gt;-windows-amd64-setup.exe</span><a class="btn solid">下载</a></div>
+            <div class="file" data-key="win-zip" data-asset="^portide-desktop-.+-windows-amd64\.zip$"><b>免安装 zip</b><span class="meta">portide-desktop-&lt;版本&gt;-windows-amd64.zip</span><a class="btn ghost">下载</a></div>
+          </div>
+          <p class="note">需要 Microsoft Edge WebView2 运行时，Windows 11 和更新过的 Windows 10 都已自带。</p>
+          <details><summary>首次打开</summary>
+            <ol>
+              <li>安装包还没有代码签名，SmartScreen 会提示"未知发布者"：点<b>更多信息 › 仍要运行</b>。</li>
+              <li>Windows 防火墙询问时，允许 Portide 访问<b>专用网络</b>，否则其他设备连不上这台电脑。</li>
+              <li>免安装版：解压到任意位置，运行 <code>portide-desktop.exe</code>。</li>
+            </ol>
+          </details>
+        </article>
+
+        <!-- Linux -->
+        <article class="dl-card" id="dl-linux">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg></span><h2>Linux<small>x86-64</small></h2></div>
+          <div class="files">
+            <div class="file" data-key="linux-deb" data-asset="^portide-desktop-.+-linux-amd64\.deb$"><b>Ubuntu 和 Debian（.deb）</b><span class="meta">portide-desktop-&lt;版本&gt;-linux-amd64.deb</span><a class="btn solid">下载</a></div>
+            <div class="file" data-key="linux-tgz" data-asset="^portide-desktop-.+-linux-amd64\.tar\.gz$"><b>其他发行版（.tar.gz）</b><span class="meta">portide-desktop-&lt;版本&gt;-linux-amd64.tar.gz</span><a class="btn ghost">下载</a></div>
+          </div>
+          <details><summary>安装</summary>
+            <ul>
+              <li>Ubuntu 和 Debian：</li>
+            </ul>
+            <pre class="codeblock">sudo apt install ./portide-desktop-*-linux-amd64.deb</pre>
+            <ul>
+              <li>其他发行版：解压后运行 <code>portide-desktop</code>。需要 GTK 3 和 WebKitGTK 4.1（Fedora：<code>sudo dnf install gtk3 webkit2gtk4.1</code>）。</li>
+              <li>KDE 和 Ubuntu 自带托盘支持；原版 GNOME 需要装 AppIndicator 扩展。</li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- iPhone & iPad -->
+        <article class="dl-card" id="dl-ios">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span><h2>iPhone 和 iPad<small>iOS / iPadOS 17 或更高</small></h2></div>
+          <div class="files">
+            <div class="file"><b>App Store</b><span class="meta">不上架中国大陆区</span><a class="btn brand off" aria-disabled="true">即将上架</a></div>
+          </div>
+          <p class="note">可以从照片、文件或任何应用分享，收到的照片和视频直接存进相册。iOS 只允许应用在打开时保持连接，所以 iPhone 在 Portide 打开或刚切到后台时接收；这期间发来的内容会在下次打开时送达。</p>
+        </article>
+
+        <!-- CLI -->
+        <article class="dl-card" id="dl-cli">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m6 9 3 3-3 3M12 15h6"/></svg></span><h2>命令行<small><code>portide</code>，用于服务器、NAS 和脚本</small></h2></div>
+          <div class="files">
+            <div class="file" data-asset="^portide-[0-9][^/]*-linux-amd64\.tar\.gz$"><b>Linux x86-64</b><span class="meta">portide-&lt;版本&gt;-linux-amd64.tar.gz</span><a class="btn ghost">下载</a></div>
+            <div class="file" data-asset="^portide-[0-9][^/]*-linux-arm64\.tar\.gz$"><b>Linux ARM64</b><span class="meta">portide-&lt;版本&gt;-linux-arm64.tar.gz</span><a class="btn ghost">下载</a></div>
+            <div class="file" data-asset="^portide-[0-9][^/]*-darwin-arm64\.tar\.gz$"><b>macOS Apple 芯片</b><span class="meta">portide-&lt;版本&gt;-darwin-arm64.tar.gz</span><a class="btn ghost">下载</a></div>
+            <div class="file" data-asset="^portide-[0-9][^/]*-darwin-amd64\.tar\.gz$"><b>macOS Intel</b><span class="meta">portide-&lt;版本&gt;-darwin-amd64.tar.gz</span><a class="btn ghost">下载</a></div>
+            <div class="file" data-asset="^portide-[0-9][^/]*-windows-amd64\.zip$"><b>Windows x86-64</b><span class="meta">portide-&lt;版本&gt;-windows-amd64.zip</span><a class="btn ghost">下载</a></div>
+          </div>
+          <details><summary>快速上手</summary>
+            <pre class="codeblock">portide init --name "家里的服务器"
+portide daemon            # 保持在线，接收文件
+portide join 12345678     # 输入另一台设备显示的配对码</pre>
+          </details>
+        </article>
+
+        <!-- Relay -->
+        <article class="dl-card" id="dl-relay">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span><h2>中继服务器<small>让不同网络里的设备连起来</small></h2></div>
+          <div class="files">
+            <div class="file" data-asset="^portide-relay-.+-linux-amd64\.tar\.gz$"><b>Linux x86-64</b><span class="meta">portide-relay-&lt;版本&gt;-linux-amd64.tar.gz</span><a class="btn ghost">下载</a></div>
+            <div class="file" data-asset="^portide-relay-.+-linux-arm64\.tar\.gz$"><b>Linux ARM64</b><span class="meta">portide-relay-&lt;版本&gt;-linux-arm64.tar.gz</span><a class="btn ghost">下载</a></div>
+            <div class="file" data-needs-repo><b>Docker 镜像</b><span class="meta" data-image>ghcr.io/&lt;owner&gt;/portide-relay:latest</span></div>
+          </div>
+          <p class="note">只有设备不在同一网络时才需要。中继只转发加密数据，什么都不存。<a data-repo="docs/中继部署.md" style="color:var(--brand)">中继部署说明 →</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gutter" style="padding-top:24px">
+    <div class="wrap two-col">
+      <div class="head">
+        <span class="eyebrow">装好之后</span>
+        <h2 class="h2">三步<span class="fade">发出第一个文件</span></h2>
+      </div>
+      <ol class="steps-list">
+        <li><span><b>给设备起个名字。</b>点"开始使用"，起一个你的其他设备能认出的名字。</span></li>
+        <li><span><b>配对第二台设备。</b>两边都打开"添加设备"：一台点"显示配对码"，另一台点"输入配对码"，输入那 8 位数字。</span></li>
+        <li><span><b>发送。</b>打开那台设备的会话，拖进文件、照片或文字。更多设备照同样方法配对。</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section gutter" id="verify" style="padding-top:24px">
+    <div class="wrap two-col">
+      <div class="panel-soft">
+        <h2>校验下载的文件</h2>
+        <p class="note" style="color:var(--ink-2)">每个版本都在 <code>SHA256SUMS.txt</code> 里列出每个文件的 SHA-256 校验值。把它下载到文件旁边，然后：</p>
+        <pre class="codeblock"># Linux：一次校验下载的所有文件
+sha256sum -c --ignore-missing SHA256SUMS.txt
+
+# macOS：和 SHA256SUMS.txt 里对应那一行比对
+shasum -a 256 portide-desktop-*.dmg
+
+# Windows（PowerShell）：同样比对，结果是大写
+Get-FileHash .\portide-desktop-*-setup.exe</pre>
+        <div class="link-list"><a data-sums data-needs-repo href="#verify">SHA256SUMS.txt</a></div>
+      </div>
+      <div class="panel-soft">
+        <h2>更新和卸载</h2>
+        <ul class="checklist">
+          <li><span><b>更新：</b>桌面版每天向 GitHub 查一次，有新版本时"设置"上会出现一个小圆点。直接覆盖安装，设备、历史和设置都会保留。</span></li>
+          <li><span><b>关闭更新检查：</b>在"设置 › 关于"里关掉；命令行设置 <code>PORTIDE_NO_UPDATE_CHECK=1</code>。</span></li>
+          <li><span><b>卸载</b>不会删除数据文件夹，重装后一切都在。想彻底清除就删掉它：<code>~/Library/Application Support/portide</code>、<code>%APPDATA%\portide</code> 或 <code>~/.config/portide</code>。</span></li>
+        </ul>
+        <div class="link-list">
+          <a data-repo="/releases">全部版本和更新说明</a>
+          <a href="support.html">安装遇到问题？获取帮助</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="wrap">
+    <span>© 2026 Portide</span>
+    <nav aria-label="页脚">
+      <a href="download.html">下载</a>
+      <a href="support.html">支持</a>
+      <a href="../en/privacy.html" hreflang="en">隐私政策（英文）</a>
+      <a href="../en/terms.html" hreflang="en">使用条款（英文）</a>
+      <a data-repo="">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="top-btn" id="top-btn" type="button" aria-label="回到顶部">↑</button>
+<script src="../assets/site.js?v=5"></script>
+<script src="../assets/download.js?v=5"></script>

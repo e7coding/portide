@@ -1,0 +1,11 @@
+# 发布用的多架构中继镜像（.github/workflows/release.yml 用它推到 ghcr.io）。
+# 构建上下文里是 scripts/package.sh 打出的两个 Linux 静态二进制：linux-amd64/portide-relay 和 linux-arm64/portide-relay。
+# 自己部署时用同目录下的 Dockerfile（在解压出来的发布包目录里构建）。
+FROM scratch
+ARG TARGETARCH
+COPY linux-${TARGETARCH}/portide-relay /portide-relay
+ENV PORTIDE_RELAY_DATA=/data
+VOLUME /data
+EXPOSE 7443/udp 7443/tcp
+ENTRYPOINT ["/portide-relay"]
+CMD ["serve"]

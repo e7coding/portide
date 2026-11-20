@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portide</title>
+<meta name="description" content="Send photos, files and text between your iPhone, iPad, Mac, Windows and Linux devices. End-to-end encrypted, no account, no cloud.">
+<meta property="og:title" content="Portide: private file transfer between your own devices">
+<meta property="og:description" content="Pair once with a code, then send like a message. End-to-end encrypted, no account, no cloud.">
+<meta property="og:image" content="../assets/apple-touch-icon.png">
+<meta name="theme-color" content="#102A33">
+<link rel="icon" href="../assets/mark.svg">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="alternate" hreflang="zh-CN" href="../zh/">
+<link rel="alternate" hreflang="en" href="../en/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&family=Public+Sans:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=5">
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav gutter" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><img src="../assets/mark.svg" alt=""><span>Portide</span></a>
+    <nav aria-label="Page">
+      <a href="#how">How it works</a>
+      <a href="#security">Security</a>
+      <a href="#faq">FAQ</a>
+      <a href="support.html">Support</a>
+    </nav>
+    <a class="lang" data-repo="" title="GitHub"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg><span>GitHub</span></a>
+    <a class="lang" href="../zh/" hreflang="zh-CN" lang="zh-CN" title="切换到中文" onclick="try{localStorage.setItem('portide-lang','zh')}catch(e){}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>中文</span></a>
+    <a class="btn solid" href="download.html">Download</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- hero -->
+  <section class="hero gutter">
+    <div class="grid" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
+    <i class="dot a" aria-hidden="true"></i><i class="dot b" aria-hidden="true"></i><i class="dot c" aria-hidden="true"></i><i class="dot d" aria-hidden="true"></i>
+    <div class="outline-word" aria-hidden="true">PORTIDE</div>
+    <div class="wrap hero-inner">
+      <h1><span class="l1">Send files between your devices,</span><span class="hi">and nowhere else</span></h1>
+      <p class="lede">Portide moves photos, videos, files and text between your iPhone, iPad, Mac, Windows and Linux machines. Pair once with a code, then send like a message. End-to-end encrypted, with no account and no cloud.</p>
+      <div class="trust"><span>End-to-end encrypted</span><span>No account, no tracking</span><span>Open source</span></div>
+      <div class="cta-row">
+        <a class="btn lg solid" href="download.html">Download Portide</a>
+        <a class="btn lg ghost" href="#how">See how it works</a>
+      </div>
+      <div class="runs">
+        <span class="eyebrow">Works on</span>
+        <ul><li>iPhone</li><li>iPad</li><li>macOS</li><li>Windows</li><li>Linux</li><li>Command line</li></ul>
+      </div>
+    </div>
+    <div class="wrap fan" aria-label="Portide on iPhone">
+      <div class="phone p0"><img src="img/iphone-devices.jpg" alt="Devices: the circle with a Mac, a Windows PC and an iPad" width="600" height="1304"></div>
+      <div class="phone p1"><img src="img/iphone-conversation.jpg" alt="A conversation with a MacBook Pro: slides, photos and a link sent both ways" width="600" height="1304"></div>
+      <div class="phone p2"><img src="img/iphone-transfers.jpg" alt="Transfers: a video sending, a queued send and a download through a relay" width="600" height="1304"></div>
+      <div class="card c1" aria-hidden="true"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></svg></span><b>Pair once with a code</b><span class="code"><i>4</i><i>8</i><i>2</i><i>1</i><i>0</i><i>9</i><i>3</i><i>7</i></span></div>
+      <div class="card ok c2" aria-hidden="true"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><b>End-to-end encrypted</b><span>Only your own devices hold the keys</span></div>
+      <div class="card warn c3" aria-hidden="true"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><b>Waiting for iPad</b><span>Goes out as soon as it’s back online</span></div>
+      <div class="card c4" aria-hidden="true"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M2 9a15 15 0 0 1 20 0"/><circle cx="12" cy="19.5" r="1"/></svg></span><b>Direct on your Wi‑Fi</b><span>No server in the middle</span></div>
+    </div>
+    <div class="fade-out" aria-hidden="true"></div>
+  </section>
+
+  <!-- how it works -->
+  <section class="section gutter" id="how">
+    <div class="wrap">
+      <span class="cross" style="left:-8px;top:-120px" aria-hidden="true"></span>
+      <div class="head">
+        <span class="eyebrow">How it works</span>
+        <h2 class="h2">Pair once. <span class="fade">Then just send.</span></h2>
+      </div>
+      <div class="flow">
+        <div class="steps" role="tablist" aria-label="How Portide works">
+          <button class="step" role="tab" aria-selected="true" data-img="pairing" data-cap="Add device › Show code. Type the eight digits on your other device before the code runs out."><span class="ic latin">1</span><b>Pair once</b><span>Show an 8-digit code on one device and type it on the other. From then on they recognize each other on their own. No sign-up, ever.</span></button>
+          <button class="step" role="tab" aria-selected="false" data-img="conversation" data-cap="A conversation with a MacBook Pro: slides, photos and a link, in both directions."><span class="ic latin">2</span><b>Send like a message</b><span>Each device gets its own conversation. Drop in photos, videos, files, folders or text, or share from any app.</span></button>
+          <button class="step" role="tab" aria-selected="false" data-img="transfers" data-cap="Transfers: a large video sending, a send queued for an offline iPad, a download through a relay."><span class="ic latin">3</span><b>Even when it’s offline</b><span>Sends to a device that’s asleep wait in a queue and go out when it’s back. Big transfers pause and pick up where they stopped.</span></button>
+          <button class="step" role="tab" aria-selected="false" data-img="network" data-cap="Settings › Network & relays, with one relay connected."><span class="ic latin">4</span><b>Away from home, too</b><span>On different networks, devices meet through a relay you run yourself, and switch to a direct path whenever they can.</span></button>
+          <button class="step" role="tab" aria-selected="false" data-img="devices" data-cap="Devices: your circle, with a Mac, a Windows PC and an iPhone."><span class="ic latin">5</span><b>You decide who’s in</b><span>Every device in your circle, in one list. Lost a phone? Remove it from another device and it’s locked out.</span></button>
+        </div>
+        <figure class="stage">
+          <div class="tablet"><img id="stage-img" src="img/ipad-pairing.jpg" alt="" width="1000" height="1333"></div>
+          <figcaption class="cap" id="stage-cap"></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- numbers -->
+  <section class="section gutter" style="padding-top:8px">
+    <div class="wrap">
+      <span class="guide" aria-hidden="true"></span>
+      <div class="head">
+        <span class="eyebrow">What you won’t find</span>
+        <h2 class="h2">Less to set up. <span class="fade">Less to trust.</span></h2>
+      </div>
+      <div class="numbers">
+        <div class="number reveal"><div class="n latin">0</div><p>accounts to create. No email, no phone number, no password.</p></div>
+        <div class="number reveal"><div class="n latin">0</div><p>bytes of your files on our servers. We never see them, so we can’t lose them.</p></div>
+        <div class="number reveal"><div class="n latin">8<small>digits</small></div><p>to pair two devices, once. After that they just find each other.</p></div>
+        <div class="number reveal"><div class="n latin">5</div><p>platforms in one circle: iPhone, iPad, Mac, Windows and Linux.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- security -->
+  <section class="gutter" id="security">
+    <div class="wrap night">
+      <div class="inner">
+        <div>
+          <span class="eyebrow">Security</span>
+          <h2 class="h2" style="margin-top:14px">Private by design, <span class="fade">not by promise</span></h2>
+          <p class="lede" style="margin-top:16px">No accounts, no analytics, nothing of yours on our servers. The privacy comes from how Portide is built, and the code is open for anyone to check.</p>
+          <ul>
+            <li><b>Keys that stay on the device</b><span>Each device makes its own Ed25519 identity key on first launch and keeps it in the system keychain.</span></li>
+            <li><b>Pairing nobody can fake</b><span>The code is checked with CPace, a password-authenticated key exchange. A wrong code or a man in the middle simply fails.</span></li>
+            <li><b>Encrypted on the wire and on disk</b><span>QUIC with TLS 1.3 between devices; message text and file names are encrypted with XChaCha20-Poly1305 in the local database.</span></li>
+            <li><b>Remove a device, lock it out</b><span>Taking a device out of your circle replaces the circle’s keys.</span></li>
+          </ul>
+          <a class="more" data-repo="docs/en/protocol.md">Read the protocol write-up →</a>
+        </div>
+        <div class="paths">
+          <div class="path">
+            <span class="t">On the same network</span>
+            <div class="route">
+              <div class="node"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span>iPhone</div>
+              <div class="wire" aria-hidden="true"></div>
+              <div class="node"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg></span>MacBook</div>
+            </div>
+            <div class="sees"><div class="no"><b>DIRECT</b><span>Device to device over your Wi‑Fi. Nothing goes through a server.</span></div></div>
+          </div>
+          <div class="path">
+            <span class="t">On different networks</span>
+            <div class="route relay">
+              <div class="node"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span>iPhone</div>
+              <div class="wire" aria-hidden="true"></div>
+              <div class="node srv"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>Relay</div>
+              <div class="wire" aria-hidden="true"></div>
+              <div class="node"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>Studio PC</div>
+            </div>
+            <div class="sees">
+              <div class="yes"><b>THE RELAY SEES</b><span>IP addresses, a routing ID, connection times and byte counts.</span></div>
+              <div class="no"><b>IT CAN’T SEE</b><span>Files, file names, text, device names or who’s in your circle.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- gallery -->
+  <section class="showcase" id="ios">
+    <div class="showcase-pin">
+    <div class="wrap gutter gallery-head">
+      <div class="head">
+        <span class="eyebrow">iPhone and iPad</span>
+        <h2 class="h2">On iPhone and iPad, <span class="fade">right at home</span></h2>
+        <p class="lede">Share from Photos, Files or any app. Save what arrives straight to Photos. Follow big transfers with progress, pause and resume.</p>
+      </div>
+      <div class="gallery-nav"><button type="button" data-scroll="-1" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><button type="button" data-scroll="1" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button></div>
+    </div>
+    <div class="gallery" id="gallery">
+      <figure><div class="tablet"><img src="img/ipad-conversation.jpg" alt="" width="1000" height="1333"></div><figcaption>Conversations</figcaption></figure>
+      <figure><div class="phone"><img src="img/iphone-pairing.jpg" alt="" width="600" height="1304"></div><figcaption>Pairing code</figcaption></figure>
+      <figure><div class="tablet"><img src="img/ipad-transfers.jpg" alt="" width="1000" height="1333"></div><figcaption>Transfers</figcaption></figure>
+      <figure><div class="phone"><img src="img/iphone-network.jpg" alt="" width="600" height="1304"></div><figcaption>Network &amp; relays</figcaption></figure>
+      <figure><div class="tablet"><img src="img/ipad-devices.jpg" alt="" width="1000" height="1333"></div><figcaption>Your circle</figcaption></figure>
+      <figure><div class="phone"><img src="img/iphone-conversation.jpg" alt="" width="600" height="1304"></div><figcaption>On iPhone</figcaption></figure>
+    </div>
+    </div>
+  </section>
+
+  <!-- connections -->
+  <section class="section gutter" id="relay" style="padding-top:40px">
+    <div class="wrap integrate">
+      <div class="head">
+        <span class="eyebrow">Connections</span>
+        <h2 class="h2">At home or away, <span class="fade">it finds a way</span></h2>
+        <p class="lede">On the same Wi‑Fi, devices find each other and connect directly, so speed depends only on your network. Elsewhere, they meet through a relay and try to open a direct path. Where UDP is blocked, they fall back to TCP on their own.</p>
+        <p class="note">The relay server is free and open source. Run it on any small Linux server, or with Docker.</p>
+      </div>
+      <div class="orbit" aria-label="How Portide devices connect">
+        <span class="ring" aria-hidden="true"></span><span class="ring r2" aria-hidden="true"></span><span class="ring r3" aria-hidden="true"></span>
+        <div class="spin">
+          <span class="chip" style="--a:0deg;--r:-44cqw"><span>Same Wi‑Fi</span></span>
+          <span class="chip" style="--a:72deg;--r:-44cqw"><span>Hole punching</span></span>
+          <span class="chip" style="--a:144deg;--r:-44cqw"><span>IPv6</span></span>
+          <span class="chip" style="--a:216deg;--r:-44cqw"><span>TCP fallback</span></span>
+          <span class="chip" style="--a:288deg;--r:-44cqw"><span>Offline queue</span></span>
+        </div>
+        <div class="spin rev">
+          <span class="chip" style="--a:30deg;--r:-27cqw"><span>Your own relay</span></span>
+          <span class="chip" style="--a:150deg;--r:-27cqw"><span>QUIC</span></span>
+          <span class="chip" style="--a:270deg;--r:-27cqw"><span>Docker</span></span>
+        </div>
+        <div class="core"><img src="../assets/mark.svg" alt="Portide"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- download -->
+  <section class="section gutter" id="download" style="padding-top:40px">
+    <div class="wrap">
+      <div class="head center">
+        <span class="eyebrow">Download</span>
+        <h2 class="h2">Free on your computers, <span class="fade">no strings</span></h2>
+        <p class="lede">No account, no ads, no in-app purchases. Put all your devices in one circle, whatever they run.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <span class="badge">Coming soon</span>
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span><h3>iPhone &amp; iPad<small>iOS and iPadOS 17 or later</small></h3></div>
+          <ul><li>Share from any app</li><li>Save straight to Photos</li><li>English and Chinese</li></ul>
+          <a class="btn lg brand" href="download.html#dl-ios">On the App Store soon</a>
+        </div>
+        <div class="plan">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg></span><h3>macOS<small>macOS 11 or later</small></h3></div>
+          <ul><li>Apple silicon and Intel</li><li>Drag and drop onto a conversation</li><li>Tray icon shows transfers</li></ul>
+          <a class="btn lg solid" href="download.html#dl-mac">Download for Mac</a>
+        </div>
+        <div class="plan">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><h3>Windows<small>Windows 10 and 11, x64</small></h3></div>
+          <ul><li>Installer or portable zip</li><li>Starts with Windows if you like</li><li>Received files land in a folder you pick</li></ul>
+          <a class="btn lg solid" href="download.html#dl-windows">Download for Windows</a>
+        </div>
+        <div class="plan">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg></span><h3>Linux<small>x86-64</small></h3></div>
+          <ul><li><span><code>.deb</code> package or tar.gz</span></li><li>The same app as on Mac and Windows</li><li>Tells you when a new version is out</li></ul>
+          <a class="btn lg solid" href="download.html#dl-linux">Download for Linux</a>
+        </div>
+        <div class="plan">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m6 9 3 3-3 3M12 15h6"/></svg></span><h3>Command line<small><code>portide</code> for Linux, macOS and Windows</small></h3></div>
+          <ul><li>Send and receive from scripts</li><li>Runs as a background service on a server or NAS</li><li>Joins the same circle as your apps</li></ul>
+          <a class="btn lg ghost" href="download.html#dl-cli">Get the CLI</a>
+        </div>
+        <div class="plan">
+          <div class="top"><span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span><h3>Relay server<small>Linux binary or Docker</small></h3></div>
+          <ul><li>Connect your devices across networks</li><li>Forwards encrypted data, stores nothing</li><li>Access tokens for the devices you allow</li></ul>
+          <a class="btn lg ghost" href="download.html#dl-relay">Get the relay</a>
+        </div>
+      </div>
+      <p class="plans-note"><a href="download.html" style="color:var(--brand);font-weight:700;text-decoration:none">All downloads, checksums and install steps →</a><br>Portide is in pre-release: desktop builds aren’t signed yet. Android is on the roadmap.</p>
+    </div>
+  </section>
+
+  <!-- faq -->
+  <section class="section gutter" id="faq" style="padding-top:24px">
+    <div class="wrap">
+      <div class="head center">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="h2">Questions, <span class="fade">answered</span></h2>
+      </div>
+      <div class="faq">
+        <details open><summary>Is Portide free?</summary><p>On Mac, Windows, Linux and the command line, yes: free and open source, and you can run your own relay for free. The iPhone and iPad app’s price will be on its App Store page when it launches. If we ever offer an official relay with a price, we’ll say so clearly before anything costs money.</p></details>
+        <details><summary>Do I need an account, or the internet?</summary><p>No account at all. On the same Wi‑Fi your devices find each other and connect directly, without going through the internet. You only need a relay when your devices are on different networks.</p></details>
+        <details><summary>Why does my iPhone only receive while Portide is open?</summary><p>iOS doesn’t let apps keep network connections open in the background. Your iPhone receives while Portide is open or just moved to the background; anything sent meanwhile waits on the other device and arrives the next time you open Portide.</p></details>
+        <details><summary>What can a relay see?</summary><p>Your device’s public IP address, a routing ID (a hash of the device’s public key), when connections start and end, and how many bytes pass. It can’t see file contents, file names, text, device names or who is in your circle, and it doesn’t store anything it forwards.</p></details>
+        <details><summary>Is it safe on public Wi‑Fi?</summary><p>Yes. Everything is encrypted end to end. Devices announce themselves with names that change every 10 minutes and that only your own devices recognize, so others on the network can tell Portide is running but not whose device it is.</p></details>
+        <details><summary>Where do received files go?</summary><p>On a computer, to the folder you choose, as ordinary files. On iPhone and iPad, into Portide’s folder in the Files app, and photos and videos into your photo library if you allow it.</p></details>
+        <details><summary>What if I lose a device?</summary><p>Remove it from your circle on any other device. That replaces the circle’s keys, so the lost device can’t connect or read anything sent afterwards.</p></details>
+        <details><summary>What about Android?</summary><p>It’s on the roadmap. Today Portide runs on iPhone, iPad, macOS, Windows and Linux.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- cta -->
+  <section class="gutter" id="start" style="padding-bottom:24px">
+    <div class="wrap cta">
+      <div class="art"><img src="../assets/mark.svg" alt=""></div>
+      <div>
+        <h2>Send your first file <span class="fade">in a minute</span></h2>
+        <div class="btns">
+          <a class="btn lg brand" href="download.html">Download Portide</a>
+          <a class="btn lg ghost" data-repo="docs/en/relay.md">Run your own relay</a>
+        </div>
+        <p class="hint">Run a relay with Docker, from the unpacked relay download:</p>
+        <div class="cmd"><code id="cmd">docker build -t portide/relay . &amp;&amp; docker run -d --name portide-relay --restart unless-stopped -p 7443:7443/udp -p 7443:7443/tcp -v portide-relay:/data -e PORTIDE_RELAY_ADDR=YOUR_SERVER_IP:7443 portide/relay</code><button type="button" id="copy" data-done="Copied">Copy</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="wrap">
+    <span>© 2026 Portide · Screenshots show sample data</span>
+    <nav aria-label="Footer">
+      <a href="download.html">Download</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="mailto:e7coding.apple@gmail.com">Contact</a>
+      <a data-repo="">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="top-btn" id="top-btn" type="button" aria-label="Back to top">↑</button>
+<script src="../assets/site.js?v=5"></script>

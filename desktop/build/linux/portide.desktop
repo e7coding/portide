@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Portide
+GenericName=File Transfer
+GenericName[zh_CN]=文件传输
+Comment=Send files and text between your own devices
+Comment[zh_CN]=在自己的设备之间互传文件和文字
+Exec=/opt/portide/portide-desktop
+Icon=portide
+Terminal=false
+Categories=Network;FileTransfer;
+Keywords=transfer;share;send;files;airdrop;localsend;
+Keywords[zh_CN]=传输;分享;发送;文件;
+StartupWMClass=portide-desktop
