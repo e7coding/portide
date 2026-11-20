@@ -4,7 +4,11 @@
 # 版本号取自 core/version/VERSION（见 scripts/version.sh）。
 # Linux（x86-64）：.deb 和 tar.gz，需要 libgtk-3-dev、libwebkit2gtk-4.1-dev、dpkg-deb。
 # Windows（x86-64）：交叉编译（不需要 cgo），NSIS 安装程序和免安装 zip，需要 makensis。
-# macOS：只能在 Mac 上打（Wails 在 macOS 上需要 cgo），生成 Portide.app 和 .dmg（未签名，见 docs/桌面端.md）。
+# macOS：只能在 Mac 上打（Wails 在 macOS 上需要 cgo），生成 Portide.app 和 .dmg。签名和公证由环境变量决定：
+#   PORTIDE_MAC_SIGN_IDENTITY  钥匙串里 "Developer ID Application" 证书的名字或 SHA-1；不设时用临时签名（别的 Mac 打不开）
+#   PORTIDE_NOTARY_KEY         App Store Connect API 密钥（.p8 文件路径），和下面两个一起设置时提交苹果公证并把票据钉进 dmg
+#   PORTIDE_NOTARY_KEY_ID      密钥 ID
+#   PORTIDE_NOTARY_ISSUER      Issuer ID
 # 都需要 Go 和 pnpm。
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -85,6 +89,17 @@ INFO
   echo "built dist/$name.zip dist/$name-setup.exe"
 }
 
+# 带苹果时间戳签名：时间戳服务偶尔连不上（"The timestamp service is not available"），重试几次。
+sign_timestamped() {
+  local n
+  for n in 1 2 3 4; do
+    codesign --force --timestamp "$@" && return 0
+    echo "codesign 失败，${n}0 秒后重试" >&2
+    sleep "${n}0"
+  done
+  return 1
+}
+
 build_mac() {
   [ "$(uname)" = Darwin ] || { echo "macOS 包只能在 Mac 上打" >&2; exit 2; }
   local arch name out app iconset
@@ -139,10 +154,41 @@ PLIST
   printf '"NSLocalNetworkUsageDescription" = "%s";\n' "Portide 在局域网里寻找并直接连接你自己的其他设备。" \
     > "$app/Contents/Resources/zh-Hans.lproj/InfoPlist.strings"
   cp docs/桌面端.md "$out/" && cp docs/en/desktop.md "$out/README.md"
-  # 没有开发者证书：用本机临时签名（ad-hoc），首次打开要在"系统设置 › 隐私与安全性"里允许。
-  codesign --force --deep --sign - "$app"
-  hdiutil create -volname Portide -srcfolder "$out" -ov -format UDZO "dist/$name.dmg" >/dev/null
-  echo "built dist/$name.dmg"
+  local identity="${PORTIDE_MAC_SIGN_IDENTITY:-}" dmg="dist/$name.dmg"
+  if [ -n "$identity" ]; then
+    # Developer ID 签名：公证要求打开 hardened runtime（--options runtime）并带苹果时间戳。
+    # 包里只有一个可执行文件，不需要 --deep；WebKit 的 JIT 在系统自己的进程里，不需要额外 entitlements。
+    sign_timestamped --options runtime --sign "$identity" "$app"
+    codesign --verify --strict --verbose=2 "$app"
+  else
+    # 没有开发者证书：临时签名（ad-hoc）。只适合本机测试，别的 Mac 下载后会被系统拦下。
+    echo "warning: PORTIDE_MAC_SIGN_IDENTITY 没有设置，Portide.app 只做了临时签名" >&2
+    codesign --force --sign - "$app"
+  fi
+  hdiutil create -volname Portide -srcfolder "$out" -ov -format UDZO "$dmg" >/dev/null
+  if [ -n "$identity" ]; then
+    sign_timestamped --sign "$identity" "$dmg"
+    if [ -n "${PORTIDE_NOTARY_KEY:-}" ] && [ -n "${PORTIDE_NOTARY_KEY_ID:-}" ] && [ -n "${PORTIDE_NOTARY_ISSUER:-}" ]; then
+      # 提交整个 dmg（里面的 Portide.app 一起公证），等结果；被拒时打印苹果给的日志。
+      local result id
+      result="$(xcrun notarytool submit "$dmg" --key "$PORTIDE_NOTARY_KEY" --key-id "$PORTIDE_NOTARY_KEY_ID" \
+        --issuer "$PORTIDE_NOTARY_ISSUER" --wait --timeout 1h --output-format json)" || true
+      echo "$result"
+      if ! printf '%s' "$result" | grep -q '"status" *: *"Accepted"'; then
+        id="$(printf '%s' "$result" | sed -n 's/.*"id" *: *"\([^"]*\)".*/\1/p' | head -n1)"
+        [ -z "$id" ] || xcrun notarytool log "$id" --key "$PORTIDE_NOTARY_KEY" --key-id "$PORTIDE_NOTARY_KEY_ID" --issuer "$PORTIDE_NOTARY_ISSUER" >&2 || true
+        echo "苹果公证没有通过" >&2
+        exit 1
+      fi
+      # 把公证票据钉进 dmg：离线时 Gatekeeper 也能验证。
+      xcrun stapler staple "$dmg"
+      xcrun stapler validate "$dmg"
+      spctl --assess --type open --context context:primary-signature --verbose=2 "$dmg"
+    else
+      echo "warning: 没有设置 PORTIDE_NOTARY_KEY / PORTIDE_NOTARY_KEY_ID / PORTIDE_NOTARY_ISSUER，dmg 已签名但没有公证" >&2
+    fi
+  fi
+  echo "built $dmg"
 }
 
 case "$targets" in

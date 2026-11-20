@@ -2,8 +2,13 @@
 # 建一个草稿 GitHub Release，并把中继镜像推到 ghcr.io。草稿检查无误后在网页上点"发布"。
 # 桌面端和命令行会查这个仓库的最新正式版来提示更新（PORTIDE_UPDATE_REPO），所以要在公开的仓库里发版。
 #
-# 还没有接上签名：macOS 仍是临时签名，Windows 安装程序没有代码签名。证书到手后在 macos、
-# linux-windows 两个任务里加签名和公证步骤（证书放在仓库的 Secrets 里）。
+# macOS 包用 Developer ID 签名并提交苹果公证，需要仓库的这些 Secrets（缺了就退回临时签名并给出警告）：
+#   MACOS_CERT_P12           "Developer ID Application" 证书连同私钥导出的 .p12，base64 编码
+#   MACOS_CERT_PASSWORD      导出 .p12 时设的密码
+#   NOTARY_API_KEY_P8        App Store Connect API 密钥（.p8 文件），base64 编码
+#   NOTARY_API_KEY_ID        密钥 ID
+#   NOTARY_API_ISSUER_ID     Issuer ID
+# Windows 安装程序还没有代码签名。
 name: Release
 
 on:
@@ -113,11 +118,55 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
           cache-dependency-path: desktop/frontend/pnpm-lock.yaml
+      # 证书导入只给这次构建用的临时钥匙串，API 密钥写进临时目录；任务结束时一起删掉。
+      - name: Set up signing
+        env:
+          MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+          NOTARY_API_KEY_P8: ${{ secrets.NOTARY_API_KEY_P8 }}
+          NOTARY_API_KEY_ID: ${{ secrets.NOTARY_API_KEY_ID }}
+          NOTARY_API_ISSUER_ID: ${{ secrets.NOTARY_API_ISSUER_ID }}
+        run: |
+          if [ -z "$MACOS_CERT_P12" ]; then
+            echo "::warning::没有 MACOS_CERT_P12，这次的 macOS 包只做了临时签名，别的 Mac 打不开"
+            exit 0
+          fi
+          keychain="$RUNNER_TEMP/signing.keychain-db"
+          kc_pass="$(openssl rand -hex 24)"
+          printf '%s' "$MACOS_CERT_P12" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security create-keychain -p "$kc_pass" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$kc_pass" "$keychain"
+          security import "$RUNNER_TEMP/cert.p12" -k "$keychain" -P "$MACOS_CERT_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$kc_pass" "$keychain" >/dev/null
+          security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
+          rm -f "$RUNNER_TEMP/cert.p12"
+          identity="$(security find-identity -v -p codesigning "$keychain" | awk '/Developer ID Application/ {print $2; exit}')"
+          if [ -z "$identity" ]; then
+            echo "::error::MACOS_CERT_P12 里没有 Developer ID Application 证书"
+            exit 1
+          fi
+          echo "PORTIDE_MAC_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
+          if [ -n "$NOTARY_API_KEY_P8" ] && [ -n "$NOTARY_API_KEY_ID" ] && [ -n "$NOTARY_API_ISSUER_ID" ]; then
+            printf '%s' "$NOTARY_API_KEY_P8" | base64 --decode > "$RUNNER_TEMP/notary.p8"
+            {
+              echo "PORTIDE_NOTARY_KEY=$RUNNER_TEMP/notary.p8"
+              echo "PORTIDE_NOTARY_KEY_ID=$NOTARY_API_KEY_ID"
+              echo "PORTIDE_NOTARY_ISSUER=$NOTARY_API_ISSUER_ID"
+            } >> "$GITHUB_ENV"
+          else
+            echo "::warning::没有配齐 NOTARY_API_KEY_P8 / NOTARY_API_KEY_ID / NOTARY_API_ISSUER_ID，这次的 dmg 已签名但没有公证"
+          fi
       - name: Build Portide.app and the dmg
         env:
           GOARCH: ${{ matrix.arch }}
           PORTIDE_UPDATE_REPO: ${{ github.repository }}
         run: bash scripts/build-desktop.sh mac
+      - name: Clean up signing
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/signing.keychain-db" 2>/dev/null || true
+          rm -f "$RUNNER_TEMP/notary.p8" "$RUNNER_TEMP/cert.p12"
       - uses: actions/upload-artifact@v4
         with:
           name: macos-${{ matrix.arch }}
