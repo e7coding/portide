@@ -31,7 +31,8 @@ type TokenEntry struct {
 type TokenFile struct {
 	path    string
 	mu      sync.Mutex
-	info    os.FileInfo
+	sum     [sha256.Size]byte // 上次解析的文件内容的哈希
+	loaded  bool              // entries 是否来自上次成功的解析
 	entries []TokenEntry
 	lastErr error // 最近一次 reload 的错误；成功或文件不存在时为 nil
 }
@@ -44,34 +45,27 @@ func hashToken(token []byte) string {
 	return hex.EncodeToString(sum[:])
 }
 
-// reload 在文件变化时重新读取；调用方持有 f.mu。记录结果供 Err 查询。
+// reload 在文件内容变化时重新解析；调用方持有 f.mu。记录结果供 Err 查询。
+//
+// 每次都读一遍文件（只有几百字节），按内容的哈希判断有没有变。不能按 inode、mtime、大小判断：
+// 命令行增删令牌是写临时文件再改名替换，Linux 上刚释放的 inode 号会马上被新文件复用，
+// 大小也可能相同，按元数据会误以为没变，已吊销的令牌就还能用。每次读取也顺带发现权限变化
+// （例如改成了中继读不了的 0600）。
 func (f *TokenFile) reload() error {
-	st, err := os.Stat(f.path)
-	if errors.Is(err, os.ErrNotExist) {
-		f.entries, f.info = nil, nil
-		f.lastErr = nil
-		return nil
-	}
-	if err != nil {
-		f.lastErr = err
-		return err
-	}
-	if f.info != nil && os.SameFile(f.info, st) && st.ModTime().Equal(f.info.ModTime()) && st.Size() == f.info.Size() && f.entries != nil {
-		// 内容没变（按元数据判断）就不用重新解析；但权限可能变了（例如改成了中继读不了的 0600），
-		// 这种情况光看 Stat 看不出来，所以还是要试着打开一下。
-		if fh, err := os.Open(f.path); err != nil {
-			f.lastErr = err
-			return err
-		} else {
-			_ = fh.Close()
-		}
-		f.lastErr = nil
-		return nil
-	}
 	b, err := os.ReadFile(f.path)
+	if errors.Is(err, os.ErrNotExist) {
+		f.entries, f.loaded = nil, false
+		f.lastErr = nil
+		return nil
+	}
 	if err != nil {
 		f.lastErr = err
 		return err
+	}
+	sum := sha256.Sum256(b)
+	if f.loaded && sum == f.sum {
+		f.lastErr = nil
+		return nil
 	}
 	var entries []TokenEntry
 	if err := json.Unmarshal(b, &entries); err != nil {
@@ -81,7 +75,7 @@ func (f *TokenFile) reload() error {
 	if entries == nil {
 		entries = []TokenEntry{}
 	}
-	f.entries, f.info = entries, st
+	f.entries, f.sum, f.loaded = entries, sum, true
 	f.lastErr = nil
 	return nil
 }
@@ -121,7 +115,7 @@ func (f *TokenFile) save(entries []TokenEntry) error {
 	if err := os.Rename(tmp, f.path); err != nil {
 		return err
 	}
-	f.entries, f.info = nil, nil // 下次读取时按新文件重新加载
+	f.entries, f.loaded = nil, false // 下次读取时按新文件重新加载
 	return f.reload()
 }
 
