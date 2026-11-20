@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"errors"
-	"portide/core/i18n"
 	"fmt"
 	"os"
 	"os/signal"
+	"portide/core/i18n"
 	"strconv"
 	"strings"
 	"text/tabwriter"

@@ -4,12 +4,12 @@ package main
 import (
 	"context"
 	"errors"
-	"portide/core/i18n"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
+	"portide/core/i18n"
 	"slices"
 	"strings"
 	"syscall"

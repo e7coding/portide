@@ -3,9 +3,9 @@ package main
 import (
 	"bufio"
 	"errors"
-	"portide/core/i18n"
 	"fmt"
 	"os"
+	"portide/core/i18n"
 	"strings"
 
 	"golang.org/x/term"

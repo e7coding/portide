@@ -1,9 +1,9 @@
 package main
 
 import (
-	"portide/core/i18n"
 	"fmt"
 	"os"
+	"portide/core/i18n"
 
 	"golang.org/x/term"
 )

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"portide/core/i18n"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+	"portide/core/i18n"
 )
 
 // logMaxSize 是日志文件的大小上限：启动时超过它就改名为 portide.log.1（覆盖上一份），重新开始写。
