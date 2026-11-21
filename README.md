@@ -4,7 +4,7 @@ Send files and text between your own devices: phone to laptop, laptop to desktop
 
 [中文说明](README.zh-CN.md)
 
-> **Status: 0.5.1.** Windows, macOS and Linux downloads are on the [releases page](https://github.com/e7coding/portide/releases/latest). The Mac app is signed and notarized by Apple; the Windows installer isn't code-signed yet. There is no official relay yet, so connecting across networks needs a relay you run yourself. An iOS app will come later, and Android is on the roadmap.
+> **Status: 0.5.2.** Windows, macOS and Linux downloads are on the [releases page](https://github.com/e7coding/portide/releases/latest). The Mac app is signed and notarized by Apple; the Windows installer isn't code-signed yet. There is no official relay yet, so connecting across networks needs a relay you run yourself. An iOS app will come later, and Android is on the roadmap.
 
 ## What it does
 
