@@ -4,7 +4,7 @@
 // REPO 填 GitHub 仓库地址（例如 https://github.com/owner/portide），仓库公开前留空：
 // 带 data-release 的按钮指向 REPO/releases/latest，带 data-repo 的链接指向仓库里的文件；
 // 留空时下载按钮变灰并显示 data-soon 里的文字，仓库链接隐藏。
-var REPO = '';
+var REPO = 'https://github.com/e7coding/portide';
 
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

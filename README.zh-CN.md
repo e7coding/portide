@@ -4,7 +4,7 @@
 
 [English](README.md)
 
-> **现状：尚未正式发布。** 已经支持 Linux、Windows、macOS 和 iOS，但安装包还没有签名，也还没有官方中继。Android 在路线图上。
+> **现状：0.5.0，首个公开版本。** Windows、macOS 和 Linux 的安装包在 [Releases 页面](https://github.com/e7coding/portide/releases/latest)。Mac 版经过苹果签名和公证，Windows 安装包暂未代码签名。还没有官方中继，跨网络连接需要自己架中继。iOS 应用以后推出，Android 在路线图上。
 
 ## 组成
 
@@ -16,7 +16,7 @@
 - `core/`：协议、存储和传输的核心实现，命令行、桌面端和 iOS 共用。
 - `spikes/`：M0 技术验证的一次性代码，结论见 `docs/m0-report.md`。
 
-持续集成：`.github/workflows/ci.yml` 在推送 main 和合并请求时跑全部测试和打包检查；发版时改 `core/version/VERSION` 并推送同名标签（如 `v0.5.0`），`release.yml` 打出全部安装包、建草稿 Release、把中继镜像推到 ghcr.io（尚未代码签名）。`.gitlab-ci.yml` 是私有 GitLab 上的同等配置，不含 iOS 和 macOS。
+持续集成：`.github/workflows/ci.yml` 在推送 main 和合并请求时跑全部测试和打包检查；发版时改 `core/version/VERSION` 并推送同名标签（如 `v0.5.0`），`release.yml` 打出全部安装包、建草稿 Release、把中继镜像推到 ghcr.io（仓库配好 `release.yml` 开头列出的签名密钥时，macOS 安装包会签名并经苹果公证；Windows 安装包暂未代码签名）。`.gitlab-ci.yml` 是私有 GitLab 上的同等配置，不含 iOS 和 macOS。
 
 安全设计的概要见英文 [README](README.md#how-the-security-works)，完整说明（威胁模型、已知限制）见 [docs/en/protocol.md](docs/en/protocol.md)；发现安全漏洞请按 [SECURITY.md](SECURITY.md) 私下报告。
 

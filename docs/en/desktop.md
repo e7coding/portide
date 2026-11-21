@@ -20,7 +20,7 @@ The desktop app works with the iOS app and with the `portide` command line: they
 ### macOS (Apple silicon or Intel, macOS 11 or later)
 
 - Open the `.dmg` and drag **Portide.app** to Applications.
-- The app isn't signed and notarized by Apple yet. The first time you open it, macOS says it can't verify the developer: go to **System Settings › Privacy & Security** and click **Open Anyway**.
+- Release builds are signed and notarized by Apple. The first time you open it, macOS checks that you meant to open an app downloaded from the internet: click **Open**. A build you make yourself with `scripts/build-desktop.sh mac` isn't signed; go to **System Settings › Privacy & Security** and click **Open Anyway**.
 - Allow **Local Network** (to find your other devices) and **Notifications** when asked.
 - The tray icon is in the menu bar. Data lives in `~/Library/Application Support/portide`.
 

@@ -4,7 +4,7 @@ Send files and text between your own devices: phone to laptop, laptop to desktop
 
 [中文说明](README.zh-CN.md)
 
-> **Status: pre-release.** Portide runs on Linux, Windows, macOS and iOS today, but builds are not yet signed and there is no official relay yet. Android is on the roadmap.
+> **Status: 0.5.0, the first public release.** Windows, macOS and Linux downloads are on the [releases page](https://github.com/e7coding/portide/releases/latest). The Mac app is signed and notarized by Apple; the Windows installer isn't code-signed yet. There is no official relay yet, so connecting across networks needs a relay you run yourself. An iOS app will come later, and Android is on the roadmap.
 
 ## What it does
 
@@ -13,24 +13,22 @@ Send files and text between your own devices: phone to laptop, laptop to desktop
 - **Across networks, with a relay you can run yourself.** When devices aren't on the same network, they connect through a relay and try to switch to a direct connection (hole punching). The relay only forwards encrypted data. It can't read files, file names, text, device names, or who is in your circle.
 - **Sends even when the other device is offline.** Sends wait in a queue and go out as soon as the other device comes online. Large transfers can be paused and resume where they stopped.
 - **One conversation per device.** History, search, and an "All devices" timeline. Received files stay on disk like any other file.
-- **Desktop, phone and command line work together.** The desktop app, the iOS app and the `portide` CLI speak the same protocol and can be in the same circle.
+- **Desktop and command line work together.** The desktop app and the `portide` CLI speak the same protocol and can be in the same circle.
 - **English and Chinese interface.**
 
 ## Platforms
 
 | Platform | Status | Guide |
 | --- | --- | --- |
-| Windows 10 / 11 (x64) | Installer and portable zip | [Desktop guide](docs/en/desktop.md) |
-| macOS 11+ (Apple silicon, Intel) | DMG, not yet notarized | [Desktop guide](docs/en/desktop.md) |
+| Windows 10 / 11 (x64) | Installer and portable zip (not yet code-signed) | [Desktop guide](docs/en/desktop.md) |
+| macOS 11+ (Apple silicon, Intel) | DMG, signed and notarized | [Desktop guide](docs/en/desktop.md) |
 | Linux (x86-64) | `.deb` and tar.gz | [Desktop guide](docs/en/desktop.md) |
-| iOS / iPadOS 17+ | Coming to the App Store | |
+| iOS / iPadOS | Later | |
 | Command line (`portide`) | Linux, macOS, Windows | [CLI guide](docs/en/cli.md) |
 | Relay server (`portide-relay`) | Linux binary or Docker | [Relay guide](docs/en/relay.md) |
 | Android | Planned | |
 
 Privacy policy and terms of use (drafts): [docs/legal/](docs/legal/). Chinese versions of the guides are in [docs/](docs/).
-
-iOS only lets apps stay connected while they are open, so an iPhone receives while Portide is in the foreground or was just moved to the background. Anything sent to it meanwhile waits on the sender and is delivered the next time Portide opens.
 
 ## How the security works
 
@@ -58,7 +56,7 @@ Building needs Go 1.26. The desktop app also needs Node.js 22 and pnpm. See the 
 
 ## CI and releases
 
-`.github/workflows/ci.yml` runs on every push to `main` and every pull request: Go tests for all three modules, the desktop UI tests, and a Linux and Windows packaging check. To release, set the version in `core/version/VERSION` and push a matching tag (`v0.5.0`): `.github/workflows/release.yml` builds every package (including Intel and Apple silicon dmgs), drafts a GitHub release with checksums, and pushes the relay image to `ghcr.io/<owner>/portide-relay`. Builds aren't code-signed yet. `.gitlab-ci.yml` runs the same tests and Linux and Windows packaging on GitLab, without macOS.
+`.github/workflows/ci.yml` runs on every push to `main` and every pull request: Go tests for all three modules, the desktop UI tests, and a Linux and Windows packaging check. To release, set the version in `core/version/VERSION` and push a matching tag (`v0.5.0`): `.github/workflows/release.yml` builds every package (including Intel and Apple silicon dmgs), drafts a GitHub release with checksums, and pushes the relay image to `ghcr.io/<owner>/portide-relay`. When the repository has the signing secrets listed at the top of `release.yml`, the dmgs are signed and notarized by Apple; the Windows installer isn't code-signed yet. `.gitlab-ci.yml` runs the same tests and Linux and Windows packaging on GitLab, without macOS.
 
 ## License
 
