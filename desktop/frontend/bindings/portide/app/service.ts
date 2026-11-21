@@ -18,14 +18,14 @@ import * as $models from "./models.js";
  * AddRelay 按指纹新增或更新中继（配置串来自 portide-relay 首次启动时打印的那一行；带不带前面的 "portide relay add" 都可以）。
  */
 export function AddRelay(config: string): $CancellablePromise<void> {
-    return $Call.ByID(2439517984, config);
+    return $Call.ByID(2450191151, config);
 }
 
 /**
  * CanRename 报告现在能否改设备名：设备圈里其他设备都升级到支持改名的版本（并且连上过一次）才可以。
  */
 export function CanRename(): $CancellablePromise<$models.RenameCheck> {
-    return $Call.ByID(977502772).then(($result: any) => {
+    return $Call.ByID(98379053).then(($result: any) => {
         return $$createType0($result);
     });
 }
@@ -34,28 +34,28 @@ export function CanRename(): $CancellablePromise<$models.RenameCheck> {
  * CancelPairing 结束一次还在等待的配对（关闭"添加设备"对话框时调用）。
  */
 export function CancelPairing(id: number): $CancellablePromise<void> {
-    return $Call.ByID(407751006, id);
+    return $Call.ByID(3953573983, id);
 }
 
 /**
  * CancelSend 取消一个还没结束的发送任务。
  */
 export function CancelSend(id: number): $CancellablePromise<void> {
-    return $Call.ByID(2449180320, id);
+    return $Call.ByID(3390457247, id);
 }
 
 /**
  * ClearHistory 清空全部历史，返回清掉的条数。
  */
 export function ClearHistory(): $CancellablePromise<number> {
-    return $Call.ByID(3246818079);
+    return $Call.ByID(987636108);
 }
 
 /**
  * Conversations 返回"全部设备"和每台其他设备的会话，设备按最后一条历史从新到旧排列，从没收发过的按名字排在后面。
  */
 export function Conversations(): $CancellablePromise<$models.Conversation[]> {
-    return $Call.ByID(762095252).then(($result: any) => {
+    return $Call.ByID(2067250509).then(($result: any) => {
         return $$createType2($result);
     });
 }
@@ -64,21 +64,21 @@ export function Conversations(): $CancellablePromise<$models.Conversation[]> {
  * DecideInbox 接受或拒绝一条等待确认的接收。
  */
 export function DecideInbox(id: number, accept: boolean): $CancellablePromise<void> {
-    return $Call.ByID(2328929464, id, accept);
+    return $Call.ByID(1639595569, id, accept);
 }
 
 /**
  * DeleteHistory 删除本机的一条历史记录（不删文件，也不影响对方的记录）。
  */
 export function DeleteHistory(id: number): $CancellablePromise<void> {
-    return $Call.ByID(1530640797, id);
+    return $Call.ByID(957566376, id);
 }
 
 /**
  * Devices 返回设备圈成员，本机排在第一个。
  */
 export function Devices(): $CancellablePromise<$models.Device[]> {
-    return $Call.ByID(3122394995).then(($result: any) => {
+    return $Call.ByID(240116766).then(($result: any) => {
         return $$createType4($result);
     });
 }
@@ -88,7 +88,7 @@ export function Devices(): $CancellablePromise<$models.Device[]> {
  * iOS 用它打开、分享收到的文件和存相册（M4），桌面端用 OpenFile / RevealFile。
  */
 export function HistoryFiles(historyID: number): $CancellablePromise<string[]> {
-    return $Call.ByID(3836339167, historyID).then(($result: any) => {
+    return $Call.ByID(254182120, historyID).then(($result: any) => {
         return $$createType5($result);
     });
 }
@@ -97,7 +97,7 @@ export function HistoryFiles(historyID: number): $CancellablePromise<string[]> {
  * Inbox 返回等待确认的接收。
  */
 export function Inbox(): $CancellablePromise<$models.InboxItem[]> {
-    return $Call.ByID(1026919496).then(($result: any) => {
+    return $Call.ByID(1100525385).then(($result: any) => {
         return $$createType7($result);
     });
 }
@@ -106,7 +106,7 @@ export function Inbox(): $CancellablePromise<$models.InboxItem[]> {
  * Init 用设备名创建本机身份（首次启动的第一步）。
  */
 export function Init(name: string): $CancellablePromise<void> {
-    return $Call.ByID(3315924362, name);
+    return $Call.ByID(1317992685, name);
 }
 
 /**
@@ -118,7 +118,7 @@ export function Init(name: string): $CancellablePromise<void> {
  * 换圈由核心在进程内完成，这里不停止、也不重启核心。
  */
 export function Join(code: string, addr: string): $CancellablePromise<$models.JoinResult> {
-    return $Call.ByID(2348375880, code, addr).then(($result: any) => {
+    return $Call.ByID(2943575891, code, addr).then(($result: any) => {
         return $$createType8($result);
     });
 }
@@ -129,7 +129,7 @@ export function Join(code: string, addr: string): $CancellablePromise<$models.Jo
  * 没有能做到的设备时不离开，返回 NeedsForce，除非 force 为真。设备名、历史和设置都保留。
  */
 export function LeaveCircle(force: boolean): $CancellablePromise<$models.LeaveResult> {
-    return $Call.ByID(1239539455, force).then(($result: any) => {
+    return $Call.ByID(1133178686, force).then(($result: any) => {
         return $$createType9($result);
     });
 }
@@ -139,7 +139,7 @@ export function LeaveCircle(force: boolean): $CancellablePromise<$models.LeaveRe
  * 设置里"网络"一节显示它们，方便在自动发现不工作时手动填写。
  */
 export function LocalAddresses(): $CancellablePromise<string[]> {
-    return $Call.ByID(2410654637).then(($result: any) => {
+    return $Call.ByID(2845443882).then(($result: any) => {
         return $$createType5($result);
     });
 }
@@ -149,28 +149,28 @@ export function LocalAddresses(): $CancellablePromise<string[]> {
  * 本机自己正在开放配对时返回 false：那是本机发布的，不是别的设备。
  */
 export function NearbyInviters(): $CancellablePromise<boolean> {
-    return $Call.ByID(1786338933);
+    return $Call.ByID(546230282);
 }
 
 /**
  * OpenFile 用系统默认程序打开历史里的一个文件。
  */
 export function OpenFile(historyID: number, index: number): $CancellablePromise<void> {
-    return $Call.ByID(3096302518, historyID, index);
+    return $Call.ByID(160321937, historyID, index);
 }
 
 /**
  * OpenSaveDir 用文件管理器打开保存目录（时间线头部的"收到的文件"、设置里的"打开"）。
  */
 export function OpenSaveDir(): $CancellablePromise<void> {
-    return $Call.ByID(2387002572);
+    return $Call.ByID(3864472657);
 }
 
 /**
  * PairingStatus 返回一次配对的当前状态。
  */
 export function PairingStatus(id: number): $CancellablePromise<$models.Pairing> {
-    return $Call.ByID(3259496406, id).then(($result: any) => {
+    return $Call.ByID(863627791, id).then(($result: any) => {
         return $$createType10($result);
     });
 }
@@ -179,21 +179,21 @@ export function PairingStatus(id: number): $CancellablePromise<$models.Pairing> 
  * PauseAll 暂停全部未结束的发送任务，返回暂停了几个（已经暂停的不算）。
  */
 export function PauseAll(): $CancellablePromise<number> {
-    return $Call.ByID(2596571745);
+    return $Call.ByID(1105996254);
 }
 
 /**
  * PauseSend 暂停一个还没结束的发送任务（正在发送的会停下来，已经传过去的部分保留）。
  */
 export function PauseSend(id: number): $CancellablePromise<void> {
-    return $Call.ByID(2460227096, id);
+    return $Call.ByID(1286237853, id);
 }
 
 /**
  * Relay 返回中继列表与各中继的连接状态。
  */
 export function Relay(): $CancellablePromise<$models.RelayInfo> {
-    return $Call.ByID(1305625089).then(($result: any) => {
+    return $Call.ByID(769449784).then(($result: any) => {
         return $$createType11($result);
     });
 }
@@ -202,7 +202,7 @@ export function Relay(): $CancellablePromise<$models.RelayInfo> {
  * RemoveDevice 把一台设备移出设备圈。force 为假且暂时确认不了设备圈已同步时不移除，返回 NeedsForce。
  */
 export function RemoveDevice(keyID: string, force: boolean): $CancellablePromise<$models.RemoveResult> {
-    return $Call.ByID(4108450890, keyID, force).then(($result: any) => {
+    return $Call.ByID(1799561749, keyID, force).then(($result: any) => {
         return $$createType12($result);
     });
 }
@@ -211,35 +211,35 @@ export function RemoveDevice(keyID: string, force: boolean): $CancellablePromise
  * RemoveRelay 按 id（RelayEntry.ID，完整指纹的十六进制）删除一个中继；删到空时之后只在局域网内连接。
  */
 export function RemoveRelay(id: string): $CancellablePromise<void> {
-    return $Call.ByID(2540891065, id);
+    return $Call.ByID(2892206348, id);
 }
 
 /**
  * RenameDevice 给设备圈里的一台设备（可以是本机）改名，新名字会同步给所有成员。
  */
 export function RenameDevice(keyID: string, name: string): $CancellablePromise<void> {
-    return $Call.ByID(1590722956, keyID, name);
+    return $Call.ByID(3048028423, keyID, name);
 }
 
 /**
  * ResumeAll 继续全部暂停的发送任务，返回继续了几个。
  */
 export function ResumeAll(): $CancellablePromise<number> {
-    return $Call.ByID(842991390);
+    return $Call.ByID(2326527915);
 }
 
 /**
  * ResumeSend 继续一个暂停的发送任务：立即重新开始，从断点续传。
  */
 export function ResumeSend(id: number): $CancellablePromise<void> {
-    return $Call.ByID(1595769821, id);
+    return $Call.ByID(1452574598, id);
 }
 
 /**
  * Retry 在 busy 或 error 阶段重新尝试启动（例如用户停掉了命令行的守护进程之后）。
  */
 export function Retry(): $CancellablePromise<$models.State> {
-    return $Call.ByID(3163527514).then(($result: any) => {
+    return $Call.ByID(2492733899).then(($result: any) => {
         return $$createType13($result);
     });
 }
@@ -250,21 +250,21 @@ export function Retry(): $CancellablePromise<$models.State> {
  * 所以和自动重试、对方重新上线时的立即重试同时发生也不会重复发送。
  */
 export function RetrySend(id: number): $CancellablePromise<void> {
-    return $Call.ByID(183166040, id);
+    return $Call.ByID(1134760589, id);
 }
 
 /**
  * RevealFile 在文件管理器里显示历史里的一个文件。
  */
 export function RevealFile(historyID: number, index: number): $CancellablePromise<void> {
-    return $Call.ByID(1810464699, historyID, index);
+    return $Call.ByID(631100192, historyID, index);
 }
 
 /**
  * Search 从新到旧搜索文字内容和文件名（不区分大小写），最多返回 50 条。
  */
 export function Search(query: string): $CancellablePromise<$models.SearchResult[]> {
-    return $Call.ByID(155767428, query).then(($result: any) => {
+    return $Call.ByID(2952924267, query).then(($result: any) => {
         return $$createType15($result);
     });
 }
@@ -273,7 +273,7 @@ export function Search(query: string): $CancellablePromise<$models.SearchResult[
  * SendFiles 把文件和文件夹发给 targets 里的每台设备。
  */
 export function SendFiles(targets: string[], paths: string[]): $CancellablePromise<$models.SendResult> {
-    return $Call.ByID(1471235897, targets, paths).then(($result: any) => {
+    return $Call.ByID(157343568, targets, paths).then(($result: any) => {
         return $$createType16($result);
     });
 }
@@ -283,7 +283,7 @@ export function SendFiles(targets: string[], paths: string[]): $CancellablePromi
  * 文件先写进数据目录下的 pasted/<随机目录>/，不再被未结束的任务引用后，下一次粘贴时清理（M3c 设计 5.4）。
  */
 export function SendPasted(targets: string[], name: string, base64Data: string): $CancellablePromise<$models.SendResult> {
-    return $Call.ByID(333901903, targets, name, base64Data).then(($result: any) => {
+    return $Call.ByID(3413539108, targets, name, base64Data).then(($result: any) => {
         return $$createType16($result);
     });
 }
@@ -292,7 +292,7 @@ export function SendPasted(targets: string[], name: string, base64Data: string):
  * SendText 把一段文本发给 targets（KeyID 列表）里的每台设备。
  */
 export function SendText(targets: string[], text: string): $CancellablePromise<$models.SendResult> {
-    return $Call.ByID(254648069, targets, text).then(($result: any) => {
+    return $Call.ByID(507118334, targets, text).then(($result: any) => {
         return $$createType16($result);
     });
 }
@@ -301,14 +301,14 @@ export function SendText(targets: string[], text: string): $CancellablePromise<$
  * SetDeviceIcon 设置本机显示某台设备时用的图标（只存在本机，不同步）；icon 为空时恢复按名字猜。
  */
 export function SetDeviceIcon(keyID: string, icon: string): $CancellablePromise<void> {
-    return $Call.ByID(1160467935, keyID, icon);
+    return $Call.ByID(3531726638, keyID, icon);
 }
 
 /**
  * SetHistoryDays 修改历史保留天数（0 表示永久保留）。
  */
 export function SetHistoryDays(days: number): $CancellablePromise<void> {
-    return $Call.ByID(573150139, days);
+    return $Call.ByID(4191538340, days);
 }
 
 /**
@@ -316,42 +316,42 @@ export function SetHistoryDays(days: number): $CancellablePromise<void> {
  * 局域网发现发布的是实际端口，换了端口其他设备照样能找到；只有手动填写过本机地址的设备需要改。
  */
 export function SetListenPort(port: number): $CancellablePromise<void> {
-    return $Call.ByID(1120433500, port);
+    return $Call.ByID(1944740445, port);
 }
 
 /**
  * SetNotify 打开或关闭系统通知。
  */
 export function SetNotify(on: boolean): $CancellablePromise<void> {
-    return $Call.ByID(749362049, on);
+    return $Call.ByID(1726273560, on);
 }
 
 /**
  * SetQueueDays 修改离线队列的保留天数。
  */
 export function SetQueueDays(days: number): $CancellablePromise<void> {
-    return $Call.ByID(3668944736, days);
+    return $Call.ByID(619487775, days);
 }
 
 /**
  * SetReceivePolicy 修改接收策略。mode 为 "ask-above" 时 askAbove 是阈值（字节，必须大于 0）。
  */
 export function SetReceivePolicy(mode: string, askAbove: number): $CancellablePromise<void> {
-    return $Call.ByID(425984367, mode, askAbove);
+    return $Call.ByID(658853240, mode, askAbove);
 }
 
 /**
  * SetSaveDir 修改接收文件的保存目录（不存在时创建）。
  */
 export function SetSaveDir(dir: string): $CancellablePromise<void> {
-    return $Call.ByID(2933860868, dir);
+    return $Call.ByID(54728699, dir);
 }
 
 /**
  * Settings 返回当前的接收与保留选项。
  */
 export function Settings(): $CancellablePromise<$models.Settings> {
-    return $Call.ByID(42181477).then(($result: any) => {
+    return $Call.ByID(3597629502).then(($result: any) => {
         return $$createType17($result);
     });
 }
@@ -360,7 +360,7 @@ export function Settings(): $CancellablePromise<$models.Settings> {
  * StartPairing 开放配对，返回给新设备输入的配对码。
  */
 export function StartPairing(): $CancellablePromise<$models.Pairing> {
-    return $Call.ByID(3434170496).then(($result: any) => {
+    return $Call.ByID(2813134979).then(($result: any) => {
         return $$createType10($result);
     });
 }
@@ -369,7 +369,7 @@ export function StartPairing(): $CancellablePromise<$models.Pairing> {
  * State 返回当前的启动状态。
  */
 export function State(): $CancellablePromise<$models.State> {
-    return $Call.ByID(152521117).then(($result: any) => {
+    return $Call.ByID(1100766596).then(($result: any) => {
         return $$createType13($result);
     });
 }
@@ -378,7 +378,7 @@ export function State(): $CancellablePromise<$models.State> {
  * StopReceive 停止一次正在进行的接收：已收到的部分会删除，对方的任务以"对方停止了接收"结束。
  */
 export function StopReceive(peerKey: string, transferID: string): $CancellablePromise<void> {
-    return $Call.ByID(1619580029, peerKey, transferID);
+    return $Call.ByID(873776264, peerKey, transferID);
 }
 
 /**
@@ -386,14 +386,14 @@ export function StopReceive(peerKey: string, transferID: string): $CancellablePr
  * 其他格式、文件已被移走或图片太大时返回空串，界面显示类型图标。
  */
 export function Thumbnail(historyID: number, index: number): $CancellablePromise<string> {
-    return $Call.ByID(1332596308, historyID, index);
+    return $Call.ByID(929202761, historyID, index);
 }
 
 /**
  * Timeline 返回最近 limit 条历史和全部未结束的发送任务，按时间从旧到新排列。peerKey 不为空时只看和这台设备之间的。
  */
 export function Timeline(peerKey: string, limit: number): $CancellablePromise<$models.TimelineItem[]> {
-    return $Call.ByID(1403051051, peerKey, limit).then(($result: any) => {
+    return $Call.ByID(2870275016, peerKey, limit).then(($result: any) => {
         return $$createType19($result);
     });
 }
@@ -402,7 +402,7 @@ export function Timeline(peerKey: string, limit: number): $CancellablePromise<$m
  * Transfers 返回未结束的发送任务（包括已暂停的）和正在进行的接收，带速度和剩余时间。
  */
 export function Transfers(): $CancellablePromise<$models.TransferList> {
-    return $Call.ByID(1309626504).then(($result: any) => {
+    return $Call.ByID(4745073).then(($result: any) => {
         return $$createType20($result);
     });
 }
@@ -411,14 +411,14 @@ export function Transfers(): $CancellablePromise<$models.TransferList> {
  * Unlock 用口令打开文件密钥库（第一次使用时就是设置口令）。
  */
 export function Unlock(passphrase: string): $CancellablePromise<void> {
-    return $Call.ByID(1370092564, passphrase);
+    return $Call.ByID(1028827323, passphrase);
 }
 
 /**
  * UseAutomaticPort 在端口被占用时把监听端口改成由系统自动选择，然后重新启动（出错页的"换一个端口启动"）。
  */
 export function UseAutomaticPort(): $CancellablePromise<$models.State> {
-    return $Call.ByID(1047884433).then(($result: any) => {
+    return $Call.ByID(229369862).then(($result: any) => {
         return $$createType13($result);
     });
 }
