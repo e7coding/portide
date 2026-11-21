@@ -100,6 +100,53 @@ sign_timestamped() {
   return 1
 }
 
+# make_dmg 把 Portide.app 做成"拖进应用程序文件夹"的 dmg：窗口里左边是 Portide，右边是 Applications 的替身，
+# 中间是箭头背景（desktop/build/macos）。窗口布局要靠 Finder 写进 .DS_Store；Finder 脚本失败时（没有图形会话、
+# 没有自动化权限）照样出 dmg，只是图标按默认排列，Applications 替身还在。
+make_dmg() {
+  local app="$1" dmg="$2" stage rw mnt bg=desktop/build/macos
+  stage="$(mktemp -d)"
+  rw="$(mktemp -d)/portide-rw.dmg"
+  cp -R "$app" "$stage/"
+  ln -s /Applications "$stage/Applications"
+  mkdir "$stage/.background"
+  # 一个 TIFF 里放 1x 和 2x 两张，Retina 屏上背景也清晰
+  tiffutil -cathidpicheck "$bg/dmg-background.png" "$bg/dmg-background-2x.png" -out "$stage/.background/background.tiff" >/dev/null
+  hdiutil create -volname Portide -srcfolder "$stage" -fs HFS+ -format UDRW -ov "$rw" >/dev/null
+  mnt="$(hdiutil attach "$rw" -readwrite -noverify -noautoopen -nobrowse | awk -F'\t' '/\/Volumes\//{print $NF; exit}')"
+  if ! osascript - "$(basename "$mnt")" <<'APPLESCRIPT'
+on run argv
+  tell application "Finder"
+    tell disk (item 1 of argv)
+      open
+      set w to container window
+      set current view of w to icon view
+      set toolbar visible of w to false
+      set statusbar visible of w to false
+      set bounds of w to {200, 120, 800, 528}
+      set o to icon view options of w
+      set arrangement of o to not arranged
+      set icon size of o to 112
+      set text size of o to 13
+      set background picture of o to file ".background:background.tiff"
+      set position of item "Portide.app" of w to {160, 175}
+      set position of item "Applications" of w to {440, 175}
+      update without registering applications
+      delay 1
+      close
+    end tell
+  end tell
+end run
+APPLESCRIPT
+  then
+    echo "warning: Finder 没能排好 dmg 窗口（没有图形会话或没有自动化权限），dmg 里的图标按默认排列" >&2
+  fi
+  sync
+  hdiutil detach "$mnt" -quiet || { sleep 3; hdiutil detach "$mnt" -force -quiet; }
+  hdiutil convert "$rw" -format UDZO -imagekey zlib-level=9 -ov -o "$dmg" >/dev/null
+  rm -rf "$stage" "$(dirname "$rw")"
+}
+
 build_mac() {
   [ "$(uname)" = Darwin ] || { echo "macOS 包只能在 Mac 上打" >&2; exit 2; }
   local arch name out app iconset
@@ -153,7 +200,6 @@ PLIST
     > "$app/Contents/Resources/en.lproj/InfoPlist.strings"
   printf '"NSLocalNetworkUsageDescription" = "%s";\n' "Portide 在局域网里寻找并直接连接你自己的其他设备。" \
     > "$app/Contents/Resources/zh-Hans.lproj/InfoPlist.strings"
-  cp docs/桌面端.md "$out/" && cp docs/en/desktop.md "$out/README.md"
   local identity="${PORTIDE_MAC_SIGN_IDENTITY:-}" dmg="dist/$name.dmg"
   if [ -n "$identity" ]; then
     # Developer ID 签名：公证要求打开 hardened runtime（--options runtime）并带苹果时间戳。
@@ -165,7 +211,7 @@ PLIST
     echo "warning: PORTIDE_MAC_SIGN_IDENTITY 没有设置，Portide.app 只做了临时签名" >&2
     codesign --force --sign - "$app"
   fi
-  hdiutil create -volname Portide -srcfolder "$out" -ov -format UDZO "$dmg" >/dev/null
+  make_dmg "$app" "$dmg"
   if [ -n "$identity" ]; then
     sign_timestamped --sign "$identity" "$dmg"
     if [ -n "${PORTIDE_NOTARY_KEY:-}" ] && [ -n "${PORTIDE_NOTARY_KEY_ID:-}" ] && [ -n "${PORTIDE_NOTARY_ISSUER:-}" ]; then
