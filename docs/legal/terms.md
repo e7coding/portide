@@ -10,7 +10,7 @@
 
 Effective: November 19, 2026
 
-These terms apply to the Portide apps and command line ("the software") and to the official Portide relay service ("the relay service") once it launches, both provided by [YOUR LEGAL NAME], an individual developer ("we", "us"). By using them you agree to these terms. How we handle information is described in the [Privacy Policy](privacy.md).
+These terms apply to the Portide apps and command line ("the software") and to the official Portide relay service ("the relay service") once it launches, both provided by JUNYANG DONG, an individual developer ("we", "us"). By using them you agree to these terms. How we handle information is described in the [Privacy Policy](privacy.md).
 
 ## 1. The software
 
@@ -69,9 +69,9 @@ We may update these terms. We'll change the date at the top, and for significant
 
 ## 9. General
 
-These terms are governed by the laws of [YOUR COUNTRY / STATE], without regard to its conflict-of-law rules, except where mandatory consumer law in your country says otherwise. If a provision is found unenforceable, the rest stays in effect. Not enforcing a provision doesn't waive it.
+These terms are governed by the laws of China, without regard to its conflict-of-law rules, except where mandatory consumer law in your country says otherwise. If a provision is found unenforceable, the rest stays in effect. Not enforcing a provision doesn't waive it.
 
 ## 10. Contact
 
-[YOUR LEGAL NAME]
+JUNYANG DONG
 Email: e7coding.apple@gmail.com

@@ -11,7 +11,7 @@
 
 Effective: November 19, 2026
 
-Portide is an app for sending files and text between your own devices. It is published by [YOUR LEGAL NAME], an individual developer ("we", "us"). This policy explains what information is involved when you use Portide and what happens to it.
+Portide is an app for sending files and text between your own devices. It is published by JUNYANG DONG, an individual developer ("we", "us"). This policy explains what information is involved when you use Portide and what happens to it.
 
 The short version: **we don't have accounts, we don't run analytics, and we can't see what you send.** Your files and messages go from one of your devices to another, end-to-end encrypted.
 
@@ -97,5 +97,5 @@ If we change this policy, we'll update the date at the top and describe signific
 
 ## 12. Contact
 
-[YOUR LEGAL NAME]
+JUNYANG DONG
 Email: e7coding.apple@gmail.com
