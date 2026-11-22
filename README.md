@@ -56,7 +56,7 @@ Building needs Go 1.26. The desktop app also needs Node.js 22 and pnpm. See the 
 
 ## CI and releases
 
-`.github/workflows/ci.yml` runs on every push to `main` and every pull request: Go tests for all three modules, the desktop UI tests, and a Linux and Windows packaging check. To release, set the version in `core/version/VERSION` and push a matching tag (`v0.5.0`): `.github/workflows/release.yml` builds every package (including Intel and Apple silicon dmgs), drafts a GitHub release with checksums, and pushes the relay image to `ghcr.io/<owner>/portide-relay`. When the repository has the signing secrets listed at the top of `release.yml`, the dmgs are signed and notarized by Apple; the Windows installer isn't code-signed yet. `.gitlab-ci.yml` runs the same tests and Linux and Windows packaging on GitLab, without macOS.
+`.github/workflows/ci.yml` runs on every push to `main` and every pull request: Go tests for all three modules, the desktop UI tests, and a Linux and Windows packaging check. To release, set the version in `core/version/VERSION` and push a matching tag (`v0.5.0`): `.github/workflows/release.yml` builds every package (including Intel and Apple silicon dmgs), publishes a GitHub release with checksums once every job passes, and pushes the relay image to `ghcr.io/<owner>/portide-relay`. When the repository has the signing secrets listed at the top of `release.yml`, the dmgs are signed and notarized by Apple; the Windows installer isn't code-signed yet. `.gitlab-ci.yml` runs the same tests and Linux and Windows packaging on GitLab, without macOS.
 
 ## License
 

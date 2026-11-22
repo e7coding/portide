@@ -1,5 +1,6 @@
 # 发版：推送 v<版本> 标签（和 core/version/VERSION 一致，例如 v0.5.0）后打出全部安装包，
-# 建一个草稿 GitHub Release，并把中继镜像推到 ghcr.io。草稿检查无误后在网页上点"发布"。
+# 直接发布 GitHub Release（只有所有任务都成功、Mac 包通过公证才会走到这一步），并把中继镜像推到 ghcr.io。
+# 说明文字是下载表格；这一版改了什么，发布后在网页上编辑补上。
 # 桌面端和命令行会查这个仓库的最新正式版来提示更新（PORTIDE_UPDATE_REPO），所以要在公开的仓库里发版。
 #
 # macOS 包用 Developer ID 签名并提交苹果公证，需要仓库的这些 Secrets（缺了就退回临时签名并给出警告）：
@@ -209,7 +210,7 @@ jobs:
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
 
   release:
-    name: Draft GitHub release
+    name: Publish GitHub release
     needs: [version, linux-windows, macos]
     runs-on: ubuntu-24.04
     permissions:
@@ -223,9 +224,39 @@ jobs:
       - name: Checksums
         working-directory: assets
         run: sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt
+      - name: Release notes
+        env:
+          V: ${{ needs.version.outputs.version }}
+          REPO: ${{ github.repository }}
+        run: |
+          cat > notes.md <<EOF
+          ## Downloads
+
+          | Platform | File |
+          | --- | --- |
+          | macOS 11+, Apple silicon | \`portide-desktop-$V-macos-arm64.dmg\` |
+          | macOS 11+, Intel | \`portide-desktop-$V-macos-amd64.dmg\` |
+          | Windows 10 / 11 (x64) | \`portide-desktop-$V-windows-amd64-setup.exe\`, or the portable \`.zip\` |
+          | Ubuntu / Debian (x86-64) | \`portide-desktop-$V-linux-amd64.deb\` |
+          | Other Linux (x86-64) | \`portide-desktop-$V-linux-amd64.tar.gz\` |
+          | Command line (\`portide\`) and relay (\`portide-relay\`) | the \`.tar.gz\` / \`.zip\` for your system |
+
+          Relay as a Docker image: \`docker pull ghcr.io/$REPO-relay:$V\`
+
+          Checksums for every file are in \`SHA256SUMS.txt\`.
+
+          ## Good to know
+
+          - The Mac app is signed and notarized by Apple.
+          - The Windows installer isn't code-signed yet. If SmartScreen warns about an unknown publisher, click **More info › Run anyway**.
+          - There's no official relay yet. To connect across networks, run your own: see the [relay guide](https://github.com/$REPO/blob/main/docs/en/relay.md).
+          EOF
+          cat notes.md
       - uses: softprops/action-gh-release@v2
         with:
-          draft: true
+          draft: false
+          make_latest: ${{ !contains(needs.version.outputs.version, '-') }}
+          body_path: notes.md
           name: Portide ${{ needs.version.outputs.version }}
           prerelease: ${{ contains(needs.version.outputs.version, '-') }}
           files: assets/*
