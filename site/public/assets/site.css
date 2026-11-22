@@ -161,6 +161,9 @@ code { font-family: var(--mono); font-size: .92em; }
 .stage { margin: 0; display: grid; justify-items: center; }
 .stage .tablet { width: 100%; max-width: 460px; }
 .stage .cap { margin-top: 18px; font-size: 13px; color: var(--faint); text-align: center; max-width: 30em; min-height: 3.4em; }
+.demo { margin: 40px 0 0; }
+.demo video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 18px; border: 1px solid var(--line); box-shadow: var(--shadow); background: #EEF0F5; }
+.demo figcaption { margin: 16px auto 0; font-size: 13px; color: var(--faint); text-align: center; max-width: 40em; }
 
 /* numbers */
 .numbers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 48px; }
