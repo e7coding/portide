@@ -35,6 +35,9 @@
     var label = primary.dataset[os || 'other'] || primary.dataset.other;
     var r = preferred() && row(preferred());
     var a = r && $('.btn', r);
+    if (os === 'ios' && primary.dataset.appstore) {
+      primary.textContent = label; primary.href = primary.dataset.appstore; primary.target = '_blank'; primary.rel = 'noopener'; primary.classList.remove('off'); return;
+    }
     if (os === 'ios' || os === 'android') {
       primary.textContent = label; primary.classList.add('off'); primary.removeAttribute('href'); return;
     }

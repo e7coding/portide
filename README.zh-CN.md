@@ -4,7 +4,7 @@
 
 [English](README.md)
 
-> **现状：0.5.2。** Windows、macOS 和 Linux 的安装包在 [Releases 页面](https://github.com/e7coding/portide/releases/latest)。Mac 版经过苹果签名和公证，Windows 安装包暂未代码签名。还没有官方中继，跨网络连接需要自己架中继。iOS 应用以后推出，Android 在路线图上。
+> **现状：0.5.2。** Windows、macOS 和 Linux 的安装包在 [Releases 页面](https://github.com/e7coding/portide/releases/latest)。Mac 版经过苹果签名和公证，Windows 安装包暂未代码签名。还没有官方中继，跨网络连接需要自己架中继。iPhone 和 iPad 版已[上架 App Store](https://apps.apple.com/app/portide-file-transfer/id6837886413)（不开源，不上架中国大陆区），Android 在路线图上。
 
 ## 组成
 

@@ -4,7 +4,7 @@ Send files and text between your own devices: phone to laptop, laptop to desktop
 
 [中文说明](README.zh-CN.md)
 
-> **Status: 0.5.2.** Windows, macOS and Linux downloads are on the [releases page](https://github.com/e7coding/portide/releases/latest). The Mac app is signed and notarized by Apple; the Windows installer isn't code-signed yet. There is no official relay yet, so connecting across networks needs a relay you run yourself. An iOS app will come later, and Android is on the roadmap.
+> **Status: 0.5.2.** Windows, macOS and Linux downloads are on the [releases page](https://github.com/e7coding/portide/releases/latest). The Mac app is signed and notarized by Apple; the Windows installer isn't code-signed yet. There is no official relay yet, so connecting across networks needs a relay you run yourself. The iPhone and iPad app is [on the App Store](https://apps.apple.com/app/portide-file-transfer/id6837886413) (not open source, not available in mainland China), and Android is on the roadmap.
 
 ## What it does
 
@@ -23,7 +23,7 @@ Send files and text between your own devices: phone to laptop, laptop to desktop
 | Windows 10 / 11 (x64) | Installer and portable zip (not yet code-signed) | [Desktop guide](docs/en/desktop.md) |
 | macOS 11+ (Apple silicon, Intel) | DMG, signed and notarized | [Desktop guide](docs/en/desktop.md) |
 | Linux (x86-64) | `.deb` and tar.gz | [Desktop guide](docs/en/desktop.md) |
-| iOS / iPadOS | Later | |
+| iOS / iPadOS 17+ | [App Store](https://apps.apple.com/app/portide-file-transfer/id6837886413), one-time purchase | |
 | Command line (`portide`) | Linux, macOS, Windows | [CLI guide](docs/en/cli.md) |
 | Relay server (`portide-relay`) | Linux binary or Docker | [Relay guide](docs/en/relay.md) |
 | Android | Planned | |
