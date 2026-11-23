@@ -263,6 +263,13 @@ code { font-family: var(--mono); font-size: .92em; }
 .plan li { display: grid; grid-template-columns: 16px 1fr; gap: 10px; }
 .plan li::before { content: "✓"; font-weight: 700; color: var(--brand); }
 .plan .btn { width: 100%; margin-top: 4px; }
+.store-badge { display: inline-flex; line-height: 0; border-radius: 10px; }
+.store-badge img { display: block; width: auto; }
+.store-badge:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.plan .store-badge { justify-self: center; margin-top: 4px; }
+.plan .store-badge img { height: 52px; }
+.file .store-badge { grid-column: 2; grid-row: 1 / span 2; }
+.file .store-badge img { height: 40px; }
 .plan .badge { position: absolute; top: 16px; right: 16px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--brand-soft); color: var(--brand); }
 .plans-note { margin-top: 18px; font-size: 13px; color: var(--faint); text-align: center; }
 
@@ -440,5 +447,6 @@ a.help-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb
   .dl-card { padding: 22px 18px 18px; }
   .file { grid-template-columns: minmax(0, 1fr); }
   .file .btn { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 6px; }
+  .file .store-badge { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 6px; }
   .page-hero { padding-block: 48px 40px; }
 }
